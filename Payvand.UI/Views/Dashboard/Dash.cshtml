@@ -1,0 +1,2350 @@
+﻿@{
+    Layout = null;
+}
+@model DashboardViewModel
+@{
+    var isTemporaryGuest = User.FindFirst("auth_provider")?.Value == "temporary_guest";
+}
+@functions {
+    private static readonly TimeZoneInfo IranTimeZone = GetIranTimeZone();
+
+    private static TimeZoneInfo GetIranTimeZone()
+    {
+        try
+        {
+            return TimeZoneInfo.FindSystemTimeZoneById("Asia/Tehran");
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            return TimeZoneInfo.FindSystemTimeZoneById("Iran Standard Time");
+        }
+    }
+
+    private static DateTime ToIranTime(DateTime dateTime)
+    {
+        var utcDate = dateTime.Kind == DateTimeKind.Utc
+            ? dateTime
+            : DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+
+        return TimeZoneInfo.ConvertTimeFromUtc(utcDate, IranTimeZone);
+    }
+
+    private static string ToPersianDate(DateTime dateTime)
+    {
+        var iranTime = ToIranTime(dateTime);
+        return iranTime.ToString("MMMM d, yyyy", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+    }
+
+    private static string QrImageSrc(string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return string.Empty;
+        }
+
+        if (path.StartsWith("/"))
+        {
+            return path;
+        }
+
+        var normalized = path.Replace("\\", "/");
+        const string marker = "/wwwroot/";
+        var index = normalized.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+        if (index >= 0)
+        {
+            return "/" + normalized.Substring(index + marker.Length).TrimStart('/');
+        }
+
+        return normalized;
+    }
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dashboard - Payvand</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" asp-append-version="true" />
+    <link rel="icon" href="/favicon.ico" sizes="any" asp-append-version="true">
+    <link rel="shortcut icon" href="/favicon.ico" asp-append-version="true">
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/Fonts/Vazirmatn.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="/css/Dashboard/Dashboard.css" rel="stylesheet" asp-append-version="true" />
+
+  
+    <style>
+
+            .hidden {
+                display: none !important;
+            }
+
+            .result-container {
+                margin: 0 10px 1.5rem;
+                padding: 16px;
+                border: 1px solid rgba(67, 97, 238, 0.18);
+                border-radius: 12px;
+                background: linear-gradient(135deg, rgba(67, 97, 238, 0.08), rgba(32, 201, 151, 0.08));
+                box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
+                font-family: 'Vazirmatn', sans-serif;
+            }
+
+            .result-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+                color: var(--text-main);
+                font-size: 0.95rem;
+                font-weight: 700;
+            }
+
+                .result-header i {
+                    color: var(--success);
+                }
+
+            #Resultdiv {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto auto;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+                direction: rtl;
+            }
+
+            #ResultInput {
+                width: 100%;
+                min-width: 0;
+                padding: 12px 14px;
+                border: 1px solid rgba(67, 97, 238, 0.22);
+                border-radius: 10px;
+                font-family: inherit;
+                font-size: 14px;
+                color: #4361ee;
+                font-weight: 600;
+                background: #ffffff;
+                outline: none;
+                transition: all 0.2s ease;
+                box-sizing: border-box;
+                cursor: default;
+                direction: ltr;
+                text-align: left;
+            }
+
+            #Copybtn,
+            #shortenother {
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #4361ee, #7209b7);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                white-space: nowrap;
+                min-height: 46px;
+            }
+
+            #shortenother {
+                background: #ffffff;
+                color: #4361ee;
+                border: 1px solid rgba(67, 97, 238, 0.24);
+            }
+
+            .result-timer {
+                margin-top: 10px;
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .analytics-list {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .analytics-link-card {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.14);
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+            }
+
+            .analytics-link-main {
+                min-width: 0;
+            }
+
+            .analytics-short {
+                color: #4361ee;
+                font-weight: 700;
+                direction: ltr;
+                text-align: left;
+                overflow-wrap: anywhere;
+            }
+
+            .analytics-original {
+                margin-top: 0.35rem;
+                color: var(--text-muted);
+                font-size: 0.9rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                direction: ltr;
+                text-align: left;
+            }
+
+            .analytics-meta {
+                display: flex;
+                gap: 1rem;
+                margin-top: 0.65rem;
+                color: var(--text-muted);
+                font-size: 0.85rem;
+            }
+
+            .analytics-view-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                min-height: 42px;
+                padding: 10px 16px;
+                border: none;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #4361ee, #7209b7);
+                color: #ffffff;
+                font-family: inherit;
+                font-weight: 700;
+                text-decoration: none;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+            .analytics-placeholder {
+                padding: 1rem;
+                border: 1px dashed rgba(67, 97, 238, 0.28);
+                border-radius: 12px;
+                background: rgba(67, 97, 238, 0.05);
+            }
+
+            .analytics-placeholder-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 0.75rem;
+                color: var(--text-main);
+                font-weight: 800;
+            }
+
+            .analytics-back-btn {
+                margin-top: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.24);
+                border-radius: 10px;
+                background: #ffffff;
+                color: #4361ee;
+                font-family: inherit;
+                font-weight: 700;
+                padding: 10px 14px;
+                cursor: pointer;
+            }
+
+            .analytics-detail-panel {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .analytics-summary-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .analytics-summary-card {
+                padding: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+            }
+
+            .analytics-summary-label {
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .analytics-summary-value {
+                margin-top: 0.45rem;
+                color: var(--text-main);
+                font-size: 1.25rem;
+                font-weight: 800;
+                overflow-wrap: anywhere;
+            }
+
+            .analytics-chart-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+                gap: 1rem;
+            }
+
+            .analytics-chart-card,
+            .analytics-table-card {
+                padding: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+            }
+
+            .analytics-card-title {
+                margin-bottom: 1rem;
+                color: var(--text-main);
+                font-weight: 800;
+            }
+
+            .trade-chart-shell {
+                position: relative;
+                min-height: 320px;
+                padding: 14px;
+                border-radius: 12px;
+                background: #0f172a;
+                border: 1px solid rgba(148, 163, 184, 0.22);
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+            }
+
+                .trade-chart-shell canvas {
+                    width: 100% !important;
+                    height: 290px !important;
+                }
+
+            .city-chart-shell {
+                position: relative;
+                min-height: 320px;
+            }
+
+                .city-chart-shell canvas {
+                    width: 100% !important;
+                    height: 290px !important;
+                }
+
+            .hour-chart {
+                display: grid;
+                grid-template-columns: repeat(24, minmax(18px, 1fr));
+                align-items: end;
+                gap: 6px;
+                min-height: 220px;
+                padding-top: 1rem;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            .hour-bar-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                min-width: 0;
+                height: 210px;
+            }
+
+            .hour-bar {
+                width: 100%;
+                min-height: 4px;
+                border-radius: 8px 8px 0 0;
+                background: linear-gradient(180deg, #4361ee, #20c997);
+            }
+
+            .hour-count {
+                margin-bottom: 4px;
+                color: var(--text-muted);
+                font-size: 0.72rem;
+            }
+
+            .hour-label {
+                margin-top: 6px;
+                color: var(--text-muted);
+                font-size: 0.7rem;
+                writing-mode: vertical-rl;
+            }
+
+            .city-chart {
+                display: grid;
+                gap: 0.75rem;
+            }
+
+            .city-bar-row {
+                display: grid;
+                grid-template-columns: 90px minmax(0, 1fr) 34px;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .city-name {
+                color: var(--text-main);
+                font-size: 0.85rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .city-track {
+                height: 10px;
+                overflow: hidden;
+                border-radius: 99px;
+                background: #edf2ff;
+            }
+
+            .city-bar {
+                height: 100%;
+                border-radius: inherit;
+                background: linear-gradient(135deg, #7209b7, #4361ee);
+            }
+
+            .city-count {
+                color: var(--text-muted);
+                font-size: 0.8rem;
+                text-align: left;
+            }
+
+            .analytics-table-wrap {
+                overflow-x: auto;
+            }
+
+            .analytics-log-table {
+                width: 100%;
+                min-width: 900px;
+                border-collapse: collapse;
+            }
+
+                .analytics-log-table th,
+                .analytics-log-table td {
+                    padding: 0.8rem;
+                    border-bottom: 1px solid #edf2f7;
+                    color: var(--text-main);
+                    font-size: 0.85rem;
+                    text-align: right;
+                    vertical-align: top;
+                }
+
+                .analytics-log-table th {
+                    color: var(--text-muted);
+                    font-weight: 700;
+                    background: #f8f9fa;
+                }
+
+            .ltr-cell {
+                direction: ltr;
+                text-align: left !important;
+                max-width: 240px;
+                overflow-wrap: anywhere;
+            }
+
+            .empty-analytics {
+                padding: 1.25rem;
+                border: 1px dashed rgba(67, 97, 238, 0.24);
+                border-radius: 12px;
+                color: var(--text-muted);
+                background: rgba(67, 97, 238, 0.04);
+            }
+
+            .logout-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                background: rgba(15, 23, 42, 0.55);
+                backdrop-filter: blur(4px);
+            }
+
+            .logout-dialog {
+                width: min(420px, 100%);
+                padding: 1.5rem;
+                border-radius: 14px;
+                background: #ffffff;
+                box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+                text-align: center;
+                font-family: 'Vazirmatn', sans-serif;
+            }
+
+            .logout-dialog-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 52px;
+                height: 52px;
+                margin-bottom: 1rem;
+                border-radius: 50%;
+                background: rgba(239, 68, 68, 0.1);
+                color: #ef4444;
+                font-size: 1.3rem;
+            }
+
+            .logout-dialog-title {
+                margin-bottom: 0.5rem;
+                color: var(--text-main);
+                font-size: 1.1rem;
+                font-weight: 800;
+            }
+
+            .logout-dialog-message {
+                margin-bottom: 1.25rem;
+                color: var(--text-muted);
+                line-height: 1.8;
+            }
+
+            .logout-dialog-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .logout-dialog-btn {
+                min-height: 44px;
+                border-radius: 10px;
+                border: none;
+                font-family: inherit;
+                font-weight: 800;
+                cursor: pointer;
+            }
+
+                .logout-dialog-btn.confirm {
+                    background: #ef4444;
+                    color: #ffffff;
+                }
+
+                .logout-dialog-btn.cancel {
+                    background: #f1f5f9;
+                    color: var(--text-main);
+                }
+
+            .qr-dashboard-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+                gap: 1rem;
+                align-items: start;
+            }
+
+            .qr-panel {
+                background: #ffffff;
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 12px;
+                padding: 1.25rem;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+                margin-bottom: 1rem;
+            }
+
+            .qr-panel-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+                color: var(--text-main);
+                font-weight: 800;
+            }
+
+                .qr-panel-title span {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+            .qr-form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .qr-color-row {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+
+            .qr-color-control {
+                display: grid;
+                grid-template-columns: 44px minmax(0, 1fr);
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.65rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-main);
+            }
+
+                .qr-color-control input[type="color"] {
+                    width: 44px;
+                    height: 44px;
+                    padding: 0;
+                    border: none;
+                    border-radius: 8px;
+                    background: transparent;
+                    cursor: pointer;
+                }
+
+            .qr-size-options {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.5rem;
+            }
+
+            .qr-size-option {
+                min-height: 42px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: #ffffff;
+                color: var(--text-main);
+                font-family: inherit;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+                .qr-size-option.active {
+                    border-color: var(--primary);
+                    color: var(--primary);
+                    background: rgba(67, 97, 238, 0.08);
+                }
+
+            .qr-preview-shell {
+                display: grid;
+                gap: 0.75rem;
+                justify-items: center;
+                padding: 1rem;
+                border: 1px dashed rgba(67, 97, 238, 0.28);
+                border-radius: 12px;
+                background: rgba(67, 97, 238, 0.04);
+            }
+
+            #qrPreviewCanvas {
+                width: min(280px, 100%);
+                aspect-ratio: 1;
+                height: auto;
+                border-radius: 8px;
+                background: #ffffff;
+                box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
+            }
+
+            .qr-help-text {
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .qr-link-list,
+            .qr-grid {
+                display: grid;
+                gap: 0.75rem;
+            }
+
+            .qr-link-list {
+                max-height: 360px;
+                overflow: auto;
+                padding-left: 0.25rem;
+            }
+
+            .qr-link-option {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.85rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-main);
+            }
+
+                .qr-link-option.active {
+                    border-color: var(--primary);
+                    background: rgba(67, 97, 238, 0.08);
+                }
+
+            .qr-link-short,
+            .qr-link-original,
+            .qr-card-link {
+                direction: ltr;
+                text-align: left;
+                overflow-wrap: anywhere;
+            }
+
+            .qr-link-short {
+                color: var(--primary);
+                font-weight: 800;
+            }
+
+            .qr-link-original {
+                margin-top: 0.25rem;
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .qr-inline-actions {
+                display: flex;
+                gap: 0.4rem;
+            }
+
+            .qr-action-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 38px;
+                height: 38px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: #ffffff;
+                color: var(--text-muted);
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+                .qr-action-btn:hover {
+                    border-color: var(--primary);
+                    color: var(--primary);
+                }
+
+                .qr-action-btn.delete:hover {
+                    border-color: var(--error);
+                    color: var(--error);
+                }
+
+            .qr-card {
+                display: grid;
+                grid-template-columns: 86px minmax(0, 1fr) auto;
+                gap: 0.8rem;
+                align-items: center;
+                padding: 0.75rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-main);
+            }
+
+                .qr-card img {
+                    width: 86px;
+                    height: 86px;
+                    object-fit: contain;
+                    border-radius: 8px;
+                    background: #ffffff;
+                }
+
+            .qr-status {
+                margin-bottom: 1rem;
+                padding: 0.85rem 1rem;
+                border-radius: 10px;
+                font-weight: 700;
+            }
+
+                .qr-status.success {
+                    color: #166534;
+                    background: #dcfce7;
+                }
+
+                .qr-status.error {
+                    color: #991b1b;
+                    background: #fee2e2;
+                }
+
+            @@media (max-width: 768px) {
+                #Resultdiv {
+                    grid-template-columns: 1fr;
+                }
+
+                #Copybtn,
+                #shortenother {
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .analytics-link-card {
+                    grid-template-columns: 1fr;
+                }
+
+                .analytics-view-btn {
+                    width: 100%;
+                }
+
+                .analytics-summary-grid,
+                .analytics-chart-grid,
+                .qr-dashboard-grid,
+                .qr-form-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .analytics-meta,
+                .qr-inline-actions {
+                    flex-wrap: wrap;
+                }
+
+                .analytics-summary-card,
+                .analytics-chart-card,
+                .analytics-table-card,
+                .qr-panel {
+                    padding: 0.9rem;
+                }
+
+                .qr-card {
+                    grid-template-columns: 72px minmax(0, 1fr);
+                    align-items: start;
+                }
+
+                    .qr-card img {
+                        width: 72px;
+                        height: 72px;
+                    }
+
+                    .qr-card .qr-inline-actions {
+                        grid-column: 1 / -1;
+                        justify-content: stretch;
+                    }
+
+                        .qr-card .qr-inline-actions .qr-action-btn,
+                        .qr-card .qr-inline-actions form {
+                            flex: 1;
+                        }
+
+                        .qr-card .qr-inline-actions .qr-action-btn {
+                            width: 100%;
+                        }
+
+                .qr-color-row,
+                .qr-size-options {
+                    grid-template-columns: 1fr;
+                }
+
+                .hour-chart {
+                    overflow-x: auto;
+                    grid-template-columns: repeat(24, 28px);
+                    padding-bottom: 0.5rem;
+                }
+            }
+
+            @@media (max-width: 420px) {
+                .qr-link-option {
+                    grid-template-columns: 1fr;
+                }
+
+                    .qr-link-option .qr-inline-actions {
+                        justify-content: stretch;
+                    }
+
+                    .qr-link-option .qr-action-btn {
+                        flex: 1;
+                        width: 100%;
+                    }
+
+                .logout-dialog-actions {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+    </style>
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/english.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <a href="/" style="text-decoration:none;">
+            <div class="logo">
+
+                <img src="/Images/Logo/logo.png" class="icon icon-md" alt="Alternate Text" />
+
+                <span class="logo-text">Payvand</span>
+            </div>
+        </a>
+
+
+        <div class="user-profile">
+            @* <div class="user-avatar"> *@
+
+            <img src="/Images/Icons/ProfileIcon.png" class="icon icon-md " alt="Payvand Logo">
+            @* </div> *@
+            <div class="user-info">
+                <div class="user-name">
+                    @if (!string.IsNullOrEmpty(Model.DisplayName))
+                    {
+                        @Model.DisplayName
+
+                    }
+                    else
+                    {
+                        @Model.UserName
+                    }
+                </div>
+                <div class="user-phone">@Model.PhoneNumber</div>
+            </div>
+            @if (!isTemporaryGuest)
+            {
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign out
+                </button>
+            }
+        </div>
+    </header>
+
+    <!-- Sidebar (Desktop) -->
+    <aside class="dashboard-sidebar">
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link active  " data-page="dashboard">
+                        <i class="fas fa-home nav-icon"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#links" class="nav-link " data-page="links">
+                        <i class="fas fa-link nav-icon"></i>
+                        <span>My links</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#create" class="nav-link" data-page="create">
+                        <i class="fas fa-plus-circle nav-icon"></i>
+                        <span>Create QR code</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#analytics" class="nav-link" data-page="analytics">
+                        <i class="fas fa-chart-line nav-icon"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-page="profile">
+                        <i class="fas fa-user nav-icon"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                @if (!isTemporaryGuest)
+                {
+                    <li class="nav-item">
+                        <a href="#logout" class="nav-link" id="mobile-logout">
+                            <i class="fas fa-sign-out-alt nav-icon"></i>
+                            <span>Sign out</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page-section active">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon link">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">@Model.LinkCount</div>
+                        <div class="stat-label">Total links</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon click">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">@Model.TodayClicks</div>
+                        <div class="stat-label">Clicks today</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon active">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">@Model.AllClicks</div>
+                        <div class="stat-label">Total clicks</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- Recent Links -->
+            <div class="recent-links">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-history"></i>
+                        Your recent links
+                    </h2>
+                    <a href="#links" class="view-all" data-page="links">
+                        View all
+                    </a>
+                </div>
+
+                <div class="links-list" id="recentLinksList">
+
+                    @foreach (var links in Model.LastLinks)
+                    {
+                        int clickcount = links.ClickLogs.Count();
+                        var shortUrl = $"{Context.Request.Host}/{links.ShorteCode}";
+                        <div class="link-item" data-copy-url="@shortUrl">
+                            <div class="link-header">
+                                <div class="link-short">@shortUrl</div>
+                                <div class="link-actions">
+                                    <a href="#analytics-@links.Id" class="action-btn analytics-link" data-link-id="@links.Id" title="View analytics">
+                                        <i class="fas fa-chart-line"></i>
+                                    </a>
+                                    <button type="button" class="action-btn copy-btn" title="Copy">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="link-details">
+                                <div class="link-original" title="@links.OriginalUrl">
+                                    @links.OriginalUrl
+                                </div>
+                                <div class="link-stats">
+                                    <i class="fas fa-mouse-pointer"></i>
+                                    @clickcount clicks
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </section>
+
+        <!-- My Links Page -->
+        <section id="links" class="page-section">
+
+     
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-link"></i>
+                    Create a new link
+                </h2>
+            </div>
+
+            <form asp-action="CreateLinkDash" asp-controller="Dashboard" method="post" id="dashboardCreateLinkForm" data-pv-validate="true" data-pv-disable-submit="true" data-pv-error="Enter a valid URL.">
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%; direction: rtl; font-family: 'Vazirmatn', sans-serif;">
+                    <div style="position: relative; flex: 1; padding:10px;">
+                        <input type="hidden" asp-for="ShortenedLink" />
+
+                        <input type="text" placeholder="Enter your URL..." style="width: 100%; padding: 12px 40px 12px 16px; border: 2px solid #e9ecef; border-radius: 12px; font-family: inherit; font-size: 14px; color: #212529; background: #ffffff; outline: none; transition: all 0.2s ease; box-sizing: border-box;"
+                               onmouseenter="this.style.borderColor='#adb5bd'"
+                               onmouseleave="this.style.borderColor='#e9ecef'"
+                               onfocus="this.style.borderColor='#4361ee'; this.style.boxShadow='0 0 0 4px rgba(67, 97, 238, 0.1)'"
+                               onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'"
+                               asp-for="OriginalUrl"
+                               id="OriginalUrl"
+                               data-pv-required="true"
+                               data-pv-url="true">
+                    </div>
+
+                    <button type="submit" style="padding: 12px 20px; background: linear-gradient(135deg, #4361ee, #7209b7); color: white; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; white-space: nowrap;"
+                            onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'"
+                            onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                            onmousedown="this.style.transform='translateY(0)'">
+                        <i class="fas fa-scissors" style="font-size: 14px;"></i>
+                        Shorten link
+                    </button>
+                </div>
+            </form>
+            <div id="linkResult" class="result-container @(string.IsNullOrEmpty(Model?.ShortenedLink) ? "hidden" : "")">
+                <div class="result-header">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Short link created successfully</span>
+                </div>
+
+                <div id="Resultdiv">
+                    <input id="ResultInput" type="text" readonly value="@Model.ShortenedLink"
+                           onmouseenter="this.style.borderColor='#adb5bd'"
+                           onmouseleave="this.style.borderColor='#e9ecef'" />
+
+                
+                    <button id="Copybtn" type="button"
+                            onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'"
+                            onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                            onmousedown="this.style.transform='translateY(0)'">
+                        <img src="/Images/Icons/CopyW.png" class="icon icon-sm" alt="Copy Icon">
+                        Copy
+                    </button>
+                    <button id="shortenother" type="button"
+                            onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'"
+                            onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                            onmousedown="this.style.transform='translateY(0)'">
+                        <img src="/Images/Icons/Plus.png" class="icon icon-sm" alt="Plus Icon">
+                        Shorten another link
+                    </button>
+                </div>
+
+            </div>
+
+             
+
+            @*
+            <form id="linkform">
+                @Html.AntiForgeryToken()
+
+                <input type="text" name="originalurl" />
+                <button type="submit">Create</button>
+            </form>
+
+            <div id="result"></div> *@
+   
+                            
+            <script>
+                            document.getElementById("dashboardCreateLinkForm")
+                                .addEventListener("submit", async function (e) {
+
+                                    e.preventDefault();
+                                    e.stopImmediatePropagation();
+
+                                    console.log("submit");
+                                    e.preventDefault();
+
+                                    const form = this;
+                                    const formData = new FormData(form);
+
+                                    try {
+
+                                        const response = await fetch(form.action, {
+                                            method: "POST",
+                                            body: formData
+                                        });
+
+                                        const result = await response.json();
+
+                                        if (response.ok && result.success) {
+
+                                            // نمایش link short
+                                            document.getElementById("ResultInput").value = result.shortenedLink;
+
+                                            // نمایش باکس نتیجه
+                                            document.getElementById("linkResult").classList.remove("hidden");
+
+                                            // پاک کردن Sign inی
+                                            document.getElementById("OriginalUrl").value = "";
+                                        }
+                                        else {
+
+                                            alert(result.message);
+
+                                        }
+
+                                    }
+                                    catch (error) {
+
+                                        console.error(error);
+                                        alert("Could not connect to the server.");
+
+                                    }
+
+                                });
+            </script>
+
+   
+         
+
+          
+
+
+                
+
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-link"></i>
+                    My links
+                </h2>
+
+      
+                <input type="text"
+                       class="form-input"
+                       placeholder="Search links..."
+                       style="max-width: 300px;"
+                       id="searchLinks">
+            </div>
+
+            <div class="links-grid" id="allLinksList">
+                @foreach (var links in Model.ShortenedLinks)
+                {
+                    int clickcounts = links.ClickLogs.Count();
+                    var shortUrl = $"{Context.Request.Host}/{links.ShorteCode}";
+                    <div class="link-card" data-id="@links.Id" data-copy-url="@shortUrl">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div class="link-short">@links.ShorteCode</div>
+
+                            <div style="display: flex; gap: 0.5rem;">
+                                <form asp-action="RemoveLink"
+                                      asp-controller="Dashboard"
+                                      method="post"
+                                      class="deleteLinkForm">
+
+                                    @* <button class="action-btn edit-btn" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button> *@
+                                    @* <button class="action-btn deactivate-btn" title="Inactive">
+                            <i class="fas fa-pause"></i>
+                        </button> *@
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden" asp-for="LinkId" value="@links.Id" />
+                                    <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+
+                                    <button type="submit"
+                                            class="action-btn delete-btn"
+                                            style="color: var(--error);">
+
+                                        <i class="fas fa-trash"></i>
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                            @shortUrl
+
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="color: var(--success); font-weight: 600;">
+                                    <i class="fas fa-mouse-pointer"></i>
+                                    @clickcounts clicks
+                                </span>
+                                @* <span style="color: var(--success); font-size: 0.85rem;">
+                            Active
+                        </span> *@
+                            </div>
+                            <a href="#analytics-@links.Id" class="action-btn analytics-link" data-link-id="@links.Id" title="View analytics">
+                                <i class="fas fa-chart-line"></i>
+                            </a>
+                            <button type="button" class="action-btn copy-btn" title="Copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+                    <script>
+                document.querySelectorAll(".deleteLinkForm").forEach(form => {
+                    form.addEventListener("submit", async function (e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+
+                        if (!confirm("Delete this link?"))
+                            return;
+
+                        try {
+                            const response = await fetch(form.action, {
+                                method: "POST",
+                                body: new FormData(form)
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                showToast(result.message);
+
+                                const card = form.closest(".link-card");
+                                card.style.transition = "all .35s ease";
+                                card.style.opacity = "0";
+                                card.style.transform = "translateX(30px)";
+
+                                setTimeout(() => {
+                                    card.remove();
+                                }, 350);
+                            } else {
+                                alert(result.message);
+                            }
+                        } catch {
+                            alert("Could not connect to the server");
+                        }
+                    });
+                });
+            </script>
+        </section>
+        <section id="create" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-qrcode"></i>
+                    Create QR Code
+                </h2>
+            </div>
+
+            @if (TempData["QrSuccess"] != null)
+            {
+                <div id="qrSuccessMessage" data-message="@TempData["QrSuccess"]" style="display:none;"></div>
+            }
+            @if (TempData["QrError"] != null)
+            {
+                <div class="qr-status error">@TempData["QrError"]</div>
+            }
+
+            <div class="qr-dashboard-grid">
+                <div>
+                    <form asp-action="CreateQrCode" asp-controller="Dashboard" method="post" enctype="multipart/form-data" id="qrForm" class="qr-panel" data-pv-validate="true" data-pv-qr="true" data-pv-error="Choose or enter a valid URL for your QR code.">
+                        <div class="qr-panel-title">
+                            <span><i class="fas fa-wand-magic-sparkles"></i> QR code settings</span>
+                            <button type="button" class="qr-action-btn" id="clearQrForm" title="New form">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <input type="hidden" asp-for="Qrcdoe.Id" id="qrId" />
+                        <input type="hidden" asp-for="Qrcdoe.Size" id="qrSizeInput" />
+
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Qrcdoe.ShortenedLinkId">Choose a short link</label>
+                            <select class="form-input" asp-for="Qrcdoe.ShortenedLinkId" id="qrShortenedLinkSelect">
+                                <option value="">Enter a different URL</option>
+                                @foreach (var link in Model.ShortenedLinks)
+                                {
+                                    var shortUrl = $"{Context.Request.Scheme}://{Context.Request.Host}/{link.ShorteCode}";
+                                    <option value="@link.Id" data-url="@shortUrl">@link.ShorteCode - @link.OriginalUrl</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Qrcdoe.Link">Or use a direct URL</label>
+                            <input class="form-input" asp-for="Qrcdoe.Link" id="qrLinkInput" placeholder="https://example.com/page" dir="ltr" data-pv-url="true" />
+                        </div>
+
+                        <div class="qr-form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Colors</label>
+                                <div class="qr-color-row">
+                                    <label class="qr-color-control">
+                                        <input type="color" asp-for="Qrcdoe.ForeGroundColor" id="qrForegroundColor" />
+                                        <span>Foreground color</span>
+                                    </label>
+                                    <label class="qr-color-control">
+                                        <input type="color" asp-for="Qrcdoe.BackGroundColor" id="qrBackgroundColor" />
+                                        <span>Background</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Output size</label>
+                                <div class="qr-size-options">
+                                    <button type="button" class="qr-size-option" data-size="220">Small</button>
+                                    <button type="button" class="qr-size-option active" data-size="300">Medium</button>
+                                    <button type="button" class="qr-size-option" data-size="500">Large</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Qrcdoe.Logo">Optional logo</label>
+                            <input class="form-input" asp-for="Qrcdoe.Logo" id="qrLogoInput" type="file" accept="image/png,image/jpeg,image/webp" />
+                            <div class="qr-help-text">The logo applies to the preview and new output only.</div>
+                        </div>
+
+                        <div class="qr-preview-shell">
+                            <canvas id="qrPreviewCanvas" width="300" height="300"></canvas>
+                            <div class="qr-help-text" id="qrPreviewText">Live QR code preview</div>
+                        </div>
+
+                        <button class="save-btn" type="submit" style="width:100%; margin-top:1rem;">
+                            <i class="fas fa-save"></i>
+                            Save QR code
+                        </button>
+                    </form>
+                            <script>
+                                const qrLinkInput = document.getElementById("qrLinkInput");
+
+let value = qrLinkInput.value.trim();
+
+if (value &&
+    !value.startsWith("http://") &&
+    !value.startsWith("https://")) {
+
+    qrLinkInput.value = "https://" + value;
+}
+                            </script>
+                </div>
+
+                <div>
+                    <div class="qr-panel">
+                        <div class="qr-panel-title">
+                            <span><i class="fas fa-link"></i> Short links</span>
+                            <span class="qr-help-text">@Model.ShortenedLinks.Count link</span>
+                        </div>
+                        <input type="text" class="form-input" id="qrLinkSearch" placeholder="Search links..." style="margin-bottom:0.75rem;" />
+                        <div class="qr-link-list" id="qrLinkList">
+                            @foreach (var link in Model.ShortenedLinks)
+                            {
+                                var shortUrl = $"{Context.Request.Host}/{link.ShorteCode}";
+                                <div class="qr-link-option" data-link-id="@link.Id" data-url="@shortUrl">
+                                    <div>
+                                        <div class="qr-link-short">@shortUrl</div>
+                                        <div class="qr-link-original">@link.OriginalUrl</div>
+                                    </div>
+                                    <div class="qr-inline-actions">
+                                        <button type="button" class="qr-action-btn qr-pick-link" title="انتخاب برای QR">
+                                            <i class="fas fa-qrcode"></i>
+                                        </button>
+                                        <button type="button" class="qr-action-btn copy-btn" title="Copy">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="qr-panel">
+                        <div class="qr-panel-title">
+                            <span><i class="fas fa-history"></i> Created QR codes</span>
+                            <span class="qr-help-text">@Model.Qrcdoe.Count items</span>
+                        </div>
+                        <div class="qr-grid">
+                            @if (!Model.Qrcdoe.QrCodes.Any())
+                            {
+                                <div class="empty-analytics">You have not created a QR code yet.</div>
+                            }
+                            @foreach (var qr in Model.Qrcdoe.QrCodes)
+                            {
+                                var qrTarget = qr.ShortenedLink == null
+                                    ? qr.Link
+                                    : $"{Context.Request.Scheme}://{Context.Request.Host}/{qr.ShortenedLink.ShorteCode}";
+                                <div class="qr-card">
+                                    <img src="@QrImageSrc(qr.QrImagePath)" alt="QR Code" />
+                                    <div>
+                                        <div class="qr-card-link">@qrTarget</div>
+                                        <div class="qr-help-text">@ToIranTime(qr.CreatedAt).ToString("yyyy/MM/dd") | @qr.Size px</div>
+                                    </div>
+                                    <div class="qr-inline-actions">
+                                        <button type="button"
+                                                class="qr-action-btn qr-edit-btn"
+                                                title="Edit"
+                                                data-id="@qr.Id"
+                                                data-link-id="@qr.ShortenedLinkId"
+                                                data-url="@qrTarget"
+                                                data-foreground="@qr.ForeGroundColor"
+                                                data-background="@qr.BackGroundColor"
+                                                data-size="@qr.Size">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <a class="qr-action-btn" asp-action="DownloadQrCode" asp-controller="Dashboard" asp-route-id="@qr.Id" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        <form asp-action="DeleteQrCode" asp-controller="Dashboard" method="post">
+                                            <input type="hidden" name="id" value="@qr.Id" />
+                                            <button type="submit" class="qr-action-btn delete qr-delete-btn" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Page -->
+        <section id="analytics" class="page-section">
+            <div id="analyticsListView">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Link analytics
+                    </h2>
+                </div>
+
+                <div class="analytics-list">
+                    @foreach (var links in Model.ShortenedLinks)
+                    {
+                        var clickcounts = links.ClickLogs.Count();
+                        var shortUrl = $"{Context.Request.Host}/{links.ShorteCode}";
+
+                        <div class="analytics-link-card"
+                             data-analytics-id="@links.Id"
+                             data-analytics-short="@shortUrl"
+                             data-analytics-original="@links.OriginalUrl"
+                             data-analytics-clicks="@clickcounts">
+                            <div class="analytics-link-main">
+                                <div class="analytics-short">@shortUrl</div>
+                                <div class="analytics-original" title="@links.OriginalUrl">@links.OriginalUrl</div>
+                                <div class="analytics-meta">
+                                    <span>
+                                        <i class="fas fa-mouse-pointer"></i>
+                                        @clickcounts clicks
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-calendar-alt"></i>
+                                        @ToIranTime(links.CreatedAt).ToString("yyyy/MM/dd")
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="#analytics-@links.Id" class="analytics-view-btn analytics-link" data-link-id="@links.Id">
+                                <i class="fas fa-chart-bar"></i>
+                                View analytics
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div id="analyticsDetailView" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Link analytics
+                    </h2>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <button type="button" id="analyticsBackToList" class="analytics-back-btn">
+                        Back to links
+                    </button>
+                </div>
+
+                <div id="analyticsDetails">
+                    @foreach (var links in Model.ShortenedLinks)
+                    {
+                        var logs = links.ClickLogs
+                            .OrderByDescending(log => log.ClickedAt)
+                            .ToList();
+                        var totalClicks = logs.Count;
+                        var uniqueCities = logs
+                            .Select(log => string.IsNullOrWhiteSpace(log.City) ? "Unknown" : log.City)
+                            .Distinct()
+                            .Count();
+                        var topReferrer = logs
+                            .Where(log => !string.IsNullOrWhiteSpace(log.Referre))
+                            .GroupBy(log => log.Referre)
+                            .OrderByDescending(group => group.Count())
+                            .Select(group => group.Key)
+                            .FirstOrDefault() ?? "Unknown";
+                        var topDevice = logs
+                            .GroupBy(log => log.DeviceType.ToString())
+                            .OrderByDescending(group => group.Count())
+                            .Select(group => group.Key)
+                            .FirstOrDefault() ?? "Unknown";
+                        var hourlyStats = Enumerable.Range(0, 24)
+                            .Select(hour => new
+                            {
+                                Hour = hour,
+                                Count = logs.Count(log => ToIranTime(log.ClickedAt).Hour == hour)
+                            })
+                            .ToList();
+                        var maxHourClicks = Math.Max(1, hourlyStats.Max(item => item.Count));
+                        var cityStats = logs
+                            .GroupBy(log => string.IsNullOrWhiteSpace(log.City) ? "Unknown" : log.City)
+                            .Select(group => new
+                            {
+                                City = group.Key,
+                                Count = group.Count()
+                            })
+                            .OrderByDescending(item => item.Count)
+                            .ThenBy(item => item.City)
+                            .Take(8)
+                            .ToList();
+                        var maxCityClicks = Math.Max(1, cityStats.Any() ? cityStats.Max(item => item.Count) : 1);
+                        var shortUrl = $"{Context.Request.Scheme}://{Context.Request.Host}/{links.ShorteCode}";
+
+                        <div class="analytics-detail-panel hidden" data-analytics-detail-id="@links.Id">
+                            <div class="analytics-link-card">
+                                <div class="analytics-link-main">
+                                    <div class="analytics-short">@shortUrl</div>
+                                    <div class="analytics-original" title="@links.OriginalUrl">@links.OriginalUrl</div>
+                                </div>
+                            </div>
+
+                            <div class="analytics-summary-grid">
+                                <div class="analytics-summary-card">
+                                    <div class="analytics-summary-label">Total clicks</div>
+                                    <div class="analytics-summary-value">@totalClicks</div>
+                                </div>
+                                <div class="analytics-summary-card">
+                                    <div class="analytics-summary-label">Unique cities</div>
+                                    <div class="analytics-summary-value">@uniqueCities</div>
+                                </div>
+                                <div class="analytics-summary-card">
+                                    <div class="analytics-summary-label">Top device</div>
+                                    <div class="analytics-summary-value">@topDevice</div>
+                                </div>
+                                <div class="analytics-summary-card">
+                                    <div class="analytics-summary-label">Top referrer</div>
+                                    <div class="analytics-summary-value">@topReferrer</div>
+                                </div>
+                            </div>
+
+                            <div class="analytics-chart-grid">
+                                <div class="analytics-chart-card">
+                                    <div class="analytics-card-title">Clicks by hour</div>
+                                    @if (totalClicks == 0)
+                                    {
+                                        <div class="empty-analytics">No clicks recorded for this link yet.</div>
+                                    }
+                                    else
+                                    {
+                                        var hourLabels = hourlyStats.Select(item => $"{item.Hour:00}:00").ToList();
+                                        var hourValues = hourlyStats.Select(item => item.Count).ToList();
+                                        <div class="trade-chart-shell">
+                                            <canvas class="hour-line-chart"></canvas>
+                                            <script type="application/json" class="hour-chart-data">
+                                                                                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(new { labels = hourLabels, values = hourValues }))
+                                            </script>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="analytics-chart-card">
+                                    <div class="analytics-card-title">Clicks by city</div>
+                                    @if (!cityStats.Any())
+                                    {
+                                        <div class="empty-analytics">No city data is available for this link.</div>
+                                    }
+                                    else
+                                    {
+                                        var cityLabels = cityStats.Select(item => item.City).ToList();
+                                        var cityValues = cityStats.Select(item => item.Count).ToList();
+                                        <div class="city-chart-shell">
+                                            <canvas class="city-bar-chart"></canvas>
+                                            <script type="application/json" class="city-chart-data">
+                                                                                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(new { labels = cityLabels, values = cityValues }))
+                                            </script>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="analytics-table-card">
+                                <div class="analytics-card-title">Recent clicks</div>
+                                @if (!logs.Any())
+                                {
+                                    <div class="empty-analytics">No activity is available for this link yet.</div>
+                                }
+                                else
+                                {
+                                    <div class="analytics-table-wrap">
+                                        <table class="analytics-log-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Time</th>
+                                                    <th>City</th>
+                                                    <th>Country</th>
+                                                    <th>Device</th>
+                                                    <th>Browser</th>
+                                                    <th>Operating system</th>
+                                                    <th>Referrer</th>
+                                                    <th>IP</th>
+                                                    <th>User Agent</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var log in logs.Take(50))
+                                                {
+                                                    <tr>
+                                                        <td>@ToIranTime(log.ClickedAt).ToString("yyyy/MM/dd HH:mm")</td>
+                                                        <td>@(string.IsNullOrWhiteSpace(log.City) ? "Unknown" : log.City)</td>
+                                                        <td>@(string.IsNullOrWhiteSpace(log.Country) ? "Unknown" : log.Country)</td>
+                                                        <td>@log.DeviceType</td>
+                                                        <td>@(string.IsNullOrWhiteSpace(log.Browser) ? "Unknown" : log.Browser)</td>
+                                                        <td>@(string.IsNullOrWhiteSpace(log.Os) ? "Unknown" : log.Os)</td>
+                                                        <td class="ltr-cell">@(string.IsNullOrWhiteSpace(log.Referre) ? "Direct" : log.Referre)</td>
+                                                        <td class="ltr-cell">@(string.IsNullOrWhiteSpace(log.IpAddress) ? "Unknown" : log.IpAddress)</td>
+                                                        <td class="ltr-cell">@(string.IsNullOrWhiteSpace(log.UserAgent) ? "Unknown" : log.UserAgent)</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Page -->
+        <section id="profile" class="page-section">
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-info">
+                        <img src="/Images/Icons/ProfileIcon.png" class="icon icon-Logo " alt="Payvand Logo">
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">
+                                @if (!string.IsNullOrEmpty(Model.DisplayName))
+                                {
+                                    @Model.DisplayName
+
+                                }
+                                else
+                                {
+                                    @Model.UserName
+                                }
+
+                            </h3>
+                            <p style="color: var(--text-muted);">Member since @ToPersianDate(Model.CreatedAt)</p>
+                        </div>
+                    </div>
+
+   
+                    <form asp-action="ChangeUserName" asp-controller="Dashboard" method="post" id="changeUserNameForm" data-pv-validate="true" data-pv-disable-submit="true" data-pv-error="Enter a valid username.">
+
+                        <input type="hidden" value="@Model.UserId" asp-for="UserId" />
+                        <label class="form-label" asp-for="@Model.DisplayName">Username</label>
+                        <input type="text" class="form-input" asp-for="@Model.DisplayName" value="@Model.DisplayName" placeholder="User_123" data-pv-required="true" data-pv-username="true" data-pv-unique-url="@Url.Action("CheckDisplayName", "Dashboard")">
+                        <span class="pv-field-error">@TempData["ChangeUserNameError"]</span>
+
+                 
+                        <button class="save-btn-usname" type="submit">
+                            <i class="fas fa-save"></i>
+                            Save changes
+                        </button>
+                    </form>
+
+   
+                    <label class="form-label">Google account email</label>
+                    <input type="email" class="form-input" value="@Model.Email" readonly dir="ltr">
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav">
+        <a href="#dashboard" class="bottom-nav-item active" data-page="dashboard">
+            <i class="fas fa-home bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Home</span>
+        </a>
+
+        <a href="#links" class="bottom-nav-item" data-page="links">
+            <i class="fas fa-link bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Links</span>
+        </a>
+
+        <a href="#create" class="bottom-nav-item" data-page="create">
+            <div class="create-link-btn">
+                <i class="fas fa-plus"></i>
+            </div>
+            <span class="bottom-nav-text create-text">Create</span>
+        </a>
+
+        <a href="#analytics" class="bottom-nav-item" data-page="analytics">
+            <i class="fas fa-chart-line bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Analytics</span>
+        </a>
+
+        <a href="#profile" class="bottom-nav-item" data-page="profile">
+            <i class="fas fa-user bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Profile</span>
+        </a>
+    </nav>
+    <div id="logoutModal" class="logout-modal hidden" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+        <div class="logout-dialog">
+            <div class="logout-dialog-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <div id="logoutModalTitle" class="logout-dialog-title">Sign out</div>
+            <div class="logout-dialog-message">Sign out of the dashboard?</div>
+            <div class="logout-dialog-actions">
+                <button type="button" id="confirmLogout" class="logout-dialog-btn confirm">Yes</button>
+                <button type="button" id="cancelLogout" class="logout-dialog-btn cancel">No</button>
+            </div>
+        </div>
+    </div>
+    <form asp-action="Logout" asp-controller="Account" method="post" id="logoutForm" hidden></form>
+
+    <!-- Overlay wrapper -->
+    @* <section class="link-shortener-section">
+        ...
+        </div> *@
+
+    <!-- Global Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle toast-icon"></i>
+        <span id="toastMessage"></span>
+        <button id="closeToast">&times;</button>
+    </div>
+
+    <script src="/js/vendor/chart.umd.min.js" asp-append-version="true"></script>
+    <script src="/js/payvand-validation.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const navLinks = document.querySelectorAll('.nav-link, .bottom-nav-item, .view-all');
+        const pageSections = document.querySelectorAll('.page-section');
+        const searchLinks = document.getElementById('searchLinks');
+        const logoutBtn = document.querySelector('.logout-btn');
+        const mobileLogout = document.getElementById('mobile-logout');
+        const shortenOther = document.getElementById('shortenother');
+        const linkResult = document.getElementById('linkResult');
+        const analyticsListView = document.getElementById('analyticsListView');
+        const analyticsDetailView = document.getElementById('analyticsDetailView');
+        const analyticsBackToList = document.getElementById('analyticsBackToList');
+        const logoutModal = document.getElementById('logoutModal');
+        const confirmLogout = document.getElementById('confirmLogout');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const chartInstances = new Map();
+        const qrForm = document.getElementById('qrForm');
+        const qrId = document.getElementById('qrId');
+        const qrSizeInput = document.getElementById('qrSizeInput');
+        const qrShortenedLinkSelect = document.getElementById('qrShortenedLinkSelect');
+        const qrLinkInput = document.getElementById('qrLinkInput');
+        const qrForegroundColor = document.getElementById('qrForegroundColor');
+        const qrBackgroundColor = document.getElementById('qrBackgroundColor');
+        const qrLogoInput = document.getElementById('qrLogoInput');
+        const qrCanvas = document.getElementById('qrPreviewCanvas');
+        const qrPreviewText = document.getElementById('qrPreviewText');
+        const qrPreviewShell = document.querySelector('.qr-preview-shell');
+        const qrLinkSearch = document.getElementById('qrLinkSearch');
+        const clearQrForm = document.getElementById('clearQrForm');
+        let qrPreviewTimer = null;
+        let qrPreviewRequest = null;
+
+        function openLogoutModal() {
+        logoutModal?.classList.remove('hidden');
+        cancelLogout?.focus();
+        }
+
+        function closeLogoutModal() {
+        logoutModal?.classList.add('hidden');
+        }
+
+        function selectedQrUrl() {
+        const selectedOption = qrShortenedLinkSelect?.selectedOptions?.[0];
+        return selectedOption?.dataset.url || qrLinkInput?.value?.trim() || '';
+        }
+
+        function drawQrPlaceholder(message) {
+        if (!qrCanvas) return;
+        const size = Number(qrSizeInput?.value || 300);
+        qrCanvas.width = size;
+        qrCanvas.height = size;
+        const ctx = qrCanvas.getContext('2d');
+        ctx.fillStyle = qrBackgroundColor?.value || '#ffffff';
+        ctx.fillRect(0, 0, qrCanvas.width, qrCanvas.height);
+        ctx.fillStyle = '#6c757d';
+        ctx.font = '16px Vazirmatn, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(message, qrCanvas.width / 2, qrCanvas.height / 2);
+        }
+
+        async function updateQrPreview() {
+        if (!qrCanvas || !qrForm) return;
+
+        const url = selectedQrUrl();
+        const size = Number(qrSizeInput?.value || 300);
+        if (!url) {
+        drawQrPlaceholder('Choose a link');
+        if (qrPreviewText) qrPreviewText.textContent = 'Choose a short link or enter a direct URL to begin.';
+        return;
+        }
+
+        qrPreviewRequest?.abort();
+        qrPreviewRequest = new AbortController();
+        const currentPreviewRequest = qrPreviewRequest;
+        if (qrPreviewText) qrPreviewText.textContent = 'Creating preview...';
+        window.PayvandLoader?.showInline(qrPreviewShell, 'Create preview');
+
+        try {
+        const response = await fetch('@Url.Action("QrCodePreview", "Dashboard")', {
+        method: 'POST',
+        body: new FormData(qrForm),
+        credentials: 'same-origin',
+        signal: currentPreviewRequest.signal
+        });
+
+        if (!response.ok) {
+        throw new Error('Preview request failed');
+        }
+
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        const image = new Image();
+        image.onload = function () {
+        qrCanvas.width = size;
+        qrCanvas.height = size;
+        const ctx = qrCanvas.getContext('2d');
+        ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+        ctx.drawImage(image, 0, 0, qrCanvas.width, qrCanvas.height);
+        URL.revokeObjectURL(imageUrl);
+        };
+        image.src = imageUrl;
+        if (qrPreviewText) qrPreviewText.textContent = `${size} × ${size} pixels`;
+        } catch (error) {
+        if (error.name === 'AbortError') return;
+        drawQrPlaceholder('Could not create preview');
+        if (qrPreviewText) qrPreviewText.textContent = 'Check the URL and QR code settings.';
+        } finally {
+        if (qrPreviewRequest === currentPreviewRequest) {
+        window.PayvandLoader?.hideInline(qrPreviewShell);
+        }
+        }
+        }
+
+        function scheduleQrPreview() {
+        clearTimeout(qrPreviewTimer);
+        qrPreviewTimer = setTimeout(updateQrPreview, 250);
+        }
+
+        function setQrSize(size) {
+        if (qrSizeInput) qrSizeInput.value = size;
+        document.querySelectorAll('.qr-size-option').forEach(option => {
+        option.classList.toggle('active', option.dataset.size === String(size));
+        });
+        scheduleQrPreview();
+        }
+
+        function pickQrLink(linkId, url) {
+        if (qrShortenedLinkSelect) qrShortenedLinkSelect.value = linkId || '';
+        if (qrLinkInput) qrLinkInput.value = linkId ? '' : (url || '');
+        document.querySelectorAll('.qr-link-option').forEach(option => {
+        option.classList.toggle('active', option.dataset.linkId === String(linkId));
+        });
+        scheduleQrPreview();
+        }
+
+        function resetQrForm() {
+        if (qrForm) qrForm.reset();
+        if (qrId) qrId.value = '0';
+        setQrSize(300);
+        pickQrLink('', '');
+        if (qrForegroundColor) qrForegroundColor.value = '#000000';
+        if (qrBackgroundColor) qrBackgroundColor.value = '#FFFFFF';
+        scheduleQrPreview();
+        }
+
+        function readChartData(panel, selector) {
+        const source = panel.querySelector(selector);
+        if (!source) return null;
+
+        try {
+        return JSON.parse(source.textContent);
+        } catch {
+        return null;
+        }
+        }
+
+        function buildGradient(ctx, area) {
+        const gradient = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+        gradient.addColorStop(0, 'rgba(34, 197, 94, 0.32)');
+        gradient.addColorStop(0.55, 'rgba(67, 97, 238, 0.12)');
+        gradient.addColorStop(1, 'rgba(15, 23, 42, 0)');
+        return gradient;
+        }
+
+        function initAnalyticsCharts(panel) {
+        if (typeof Chart === 'undefined') return;
+
+        const panelId = panel.dataset.analyticsDetailId;
+        if (!panelId || chartInstances.has(panelId)) return;
+
+        const hourData = readChartData(panel, '.hour-chart-data');
+        const cityData = readChartData(panel, '.city-chart-data');
+        const hourCanvas = panel.querySelector('.hour-line-chart');
+        const cityCanvas = panel.querySelector('.city-bar-chart');
+        const charts = [];
+
+        if (hourData && hourCanvas) {
+        const ctx = hourCanvas.getContext('2d');
+        charts.push(new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels: hourData.labels,
+        datasets: [{
+        label: 'clicks',
+        data: hourData.values,
+        borderColor: '#22c55e',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#0f172a',
+        pointBorderColor: '#22c55e',
+        pointBorderWidth: 2,
+        tension: 0.36,
+        fill: true,
+        backgroundColor(context) {
+        const chart = context.chart;
+        const { ctx, chartArea } = chart;
+        if (!chartArea) return 'rgba(34, 197, 94, 0.16)';
+        return buildGradient(ctx, chartArea);
+        }
+        }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+        intersect: false,
+        mode: 'index'
+        },
+        plugins: {
+        legend: { display: false },
+        tooltip: {
+        rtl: true,
+        backgroundColor: 'rgba(15, 23, 42, 0.92)',
+        titleColor: '#e2e8f0',
+        bodyColor: '#e2e8f0',
+        borderColor: 'rgba(34, 197, 94, 0.45)',
+        borderWidth: 1
+        }
+        },
+        scales: {
+        x: {
+        grid: { color: 'rgba(148, 163, 184, 0.12)' },
+        ticks: { color: '#94a3b8', maxRotation: 0, autoSkip: true, maxTicksLimit: 12 }
+        },
+        y: {
+        beginAtZero: true,
+        ticks: { color: '#94a3b8', precision: 0 },
+        grid: { color: 'rgba(148, 163, 184, 0.14)' }
+        }
+        }
+        }
+        }));
+        }
+
+        if (cityData && cityCanvas) {
+        charts.push(new Chart(cityCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+        labels: cityData.labels,
+        datasets: [{
+        label: 'clicks',
+        data: cityData.values,
+        borderRadius: 8,
+        backgroundColor: '#4361ee',
+        hoverBackgroundColor: '#7209b7'
+        }]
+        },
+        options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+        legend: { display: false },
+        tooltip: {
+        rtl: true,
+        callbacks: {
+        label(context) {
+        return `${context.raw} clicks`;
+        }
+        }
+        }
+        },
+        scales: {
+        x: {
+        beginAtZero: true,
+        ticks: { precision: 0 },
+        grid: { color: 'rgba(148, 163, 184, 0.18)' }
+        },
+        y: {
+        grid: { display: false }
+        }
+        }
+        }
+        }));
+        }
+
+        chartInstances.set(panelId, charts);
+        }
+
+        function showAnalyticsList() {
+        analyticsListView?.classList.remove('hidden');
+        analyticsDetailView?.classList.add('hidden');
+        document.querySelectorAll('.analytics-detail-panel').forEach(panel => {
+        panel.classList.add('hidden');
+        });
+        }
+
+        function showAnalyticsDetail(linkId, updateHash = true) {
+        const card = document.querySelector(`[data-analytics-id="${linkId}"]`);
+        const detailPanel = document.querySelector(`[data-analytics-detail-id="${linkId}"]`);
+        if (!card || !detailPanel) {
+        showAnalyticsList();
+        showPage('analytics', updateHash);
+        return;
+        }
+
+        analyticsListView?.classList.add('hidden');
+        analyticsDetailView?.classList.remove('hidden');
+        document.querySelectorAll('.analytics-detail-panel').forEach(panel => {
+        panel.classList.toggle('hidden', panel !== detailPanel);
+        });
+        showPage('analytics', false, false);
+        requestAnimationFrame(() => initAnalyticsCharts(detailPanel));
+
+        if (updateHash) {
+        history.replaceState(null, '', `#analytics-${linkId}`);
+        }
+        }
+
+        function showPage(page, updateHash = true, resetAnalytics = true) {
+        const targetSection = document.getElementById(page);
+        if (!targetSection) return;
+
+        navLinks.forEach(nav => nav.classList.remove('active'));
+        document.querySelectorAll(`[data-page="${page}"]`).forEach(nav => nav.classList.add('active'));
+
+        pageSections.forEach(section => {
+        section.classList.toggle('active', section.id === page);
+        });
+
+        if (updateHash) {
+        history.replaceState(null, '', `#${page}`);
+        }
+
+        if (page === 'analytics' && resetAnalytics) {
+        showAnalyticsList();
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+        const page = this.dataset.page;
+        if (!page || page === 'logout') return;
+
+        e.preventDefault();
+        showPage(page);
+        });
+        });
+
+        const initialPage = window.location.hash.replace('#', '');
+        if (initialPage.startsWith('analytics-')) {
+        showAnalyticsDetail(initialPage.replace('analytics-', ''), false);
+        } else if (initialPage) {
+        showPage(initialPage, false);
+        }
+
+        document.querySelectorAll('.analytics-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+        e.preventDefault();
+        showAnalyticsDetail(this.dataset.linkId);
+        });
+        });
+
+        if (analyticsBackToList) {
+        analyticsBackToList.addEventListener('click', function () {
+        showAnalyticsList();
+        showPage('analytics');
+        });
+        }
+
+        if (linkResult && !linkResult.classList.contains('hidden')) {
+        showPage('links', false);
+        setTimeout(() => {
+        linkResult.classList.add('hidden');
+        }, 10000);
+        }
+
+        if (searchLinks) {
+        searchLinks.addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase().trim();
+        document.querySelectorAll('#allLinksList .link-card').forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+        });
+        });
+        }
+
+        qrShortenedLinkSelect?.addEventListener('change', function () {
+        if (this.value && qrLinkInput) {
+        qrLinkInput.value = '';
+        }
+        pickQrLink(this.value, selectedQrUrl());
+        });
+
+        qrLinkInput?.addEventListener('input', function () {
+        if (this.value.trim() && qrShortenedLinkSelect) {
+        qrShortenedLinkSelect.value = '';
+        document.querySelectorAll('.qr-link-option').forEach(option => option.classList.remove('active'));
+        }
+        scheduleQrPreview();
+        });
+
+        qrForegroundColor?.addEventListener('input', scheduleQrPreview);
+        qrBackgroundColor?.addEventListener('input', scheduleQrPreview);
+
+        qrLogoInput?.addEventListener('change', function () {
+        scheduleQrPreview();
+        });
+
+        document.querySelectorAll('.qr-size-option').forEach(option => {
+        option.addEventListener('click', function () {
+        setQrSize(this.dataset.size);
+        });
+        });
+
+        document.querySelectorAll('.qr-pick-link').forEach(button => {
+        button.addEventListener('click', function () {
+        const item = this.closest('.qr-link-option');
+        if (!item) return;
+        pickQrLink(item.dataset.linkId, item.dataset.url);
+        });
+        });
+
+        qrLinkSearch?.addEventListener('input', function () {
+        const term = this.value.toLowerCase().trim();
+        document.querySelectorAll('#qrLinkList .qr-link-option').forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+        });
+
+        document.querySelectorAll('.qr-edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+        if (qrId) qrId.value = this.dataset.id || '0';
+        if (qrForegroundColor) qrForegroundColor.value = this.dataset.foreground || '#000000';
+        if (qrBackgroundColor) qrBackgroundColor.value = this.dataset.background || '#FFFFFF';
+        setQrSize(this.dataset.size || 300);
+        pickQrLink(this.dataset.linkId || '', this.dataset.url || '');
+        if (!this.dataset.linkId && qrLinkInput) {
+        qrLinkInput.value = this.dataset.url || '';
+        }
+        if (qrLogoInput) qrLogoInput.value = '';
+        showPage('create');
+        scheduleQrPreview();
+        });
+        });
+
+        document.querySelectorAll('.qr-delete-btn').forEach(button => {
+        button.addEventListener('click', function (e) {
+        if (!confirm('Delete this QR code?')) {
+        e.preventDefault();
+        }
+        });
+        });
+
+        clearQrForm?.addEventListener('click', resetQrForm);
+
+        document.addEventListener('click', function (e) {
+        const copyButton = e.target.closest('.copy-btn, #Copybtn');
+        if (!copyButton) return;
+
+        const container = copyButton.closest('.link-item, .link-card, #Resultdiv, .qr-link-option');
+        const linkText = container?.dataset.copyUrl?.trim()
+        || container?.dataset.url?.trim()
+        || container?.querySelector('.link-short')?.textContent?.trim()
+        || container?.querySelector('.qr-link-short')?.textContent?.trim()
+        || document.getElementById('ResultInput')?.value?.trim();
+
+        if (!linkText) return;
+
+        navigator.clipboard.writeText(linkText).then(() => {
+        const original = copyButton.innerHTML;
+        copyButton.innerHTML = '<i class="fas fa-check"></i>';
+        copyButton.style.color = 'var(--success)';
+        setTimeout(() => {
+        copyButton.innerHTML = original;
+        copyButton.style.color = '';
+        }, 1500);
+        });
+        });
+
+        if (shortenOther) {
+        shortenOther.addEventListener('click', function () {
+        const urlInput = document.getElementById('OriginalUrl');
+        if (urlInput) {
+        urlInput.value = '';
+        urlInput.focus();
+        }
+        if (linkResult) {
+        linkResult.classList.add('hidden');
+        }
+        });
+        }
+
+        if (logoutBtn) {
+        logoutBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openLogoutModal();
+        });
+        }
+
+        if (mobileLogout && logoutBtn) {
+        mobileLogout.addEventListener('click', function (e) {
+        e.preventDefault();
+        openLogoutModal();
+        });
+        }
+
+        if (confirmLogout) {
+        confirmLogout.addEventListener('click', function () {
+        document.getElementById('logoutForm')?.requestSubmit();
+        });
+        }
+
+        if (cancelLogout) {
+        cancelLogout.addEventListener('click', closeLogoutModal);
+        }
+
+        if (logoutModal) {
+        logoutModal.addEventListener('click', function (e) {
+        if (e.target === logoutModal) {
+        closeLogoutModal();
+        }
+        });
+        }
+
+        document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && logoutModal && !logoutModal.classList.contains('hidden')) {
+        closeLogoutModal();
+        }
+        });
+
+        // ---- Toast notification ----
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const closeToast = document.getElementById('closeToast');
+
+        window.showToast = function (message) {
+            if (!toast || !toastMessage) return;
+            toastMessage.textContent = message;
+            toast.classList.remove('hiding');
+            toast.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    toast.classList.remove('show', 'hiding');
+                }, 400);
+            }, 5000);
+        };
+
+        if (closeToast) {
+            closeToast.addEventListener('click', function () {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    toast.classList.remove('show', 'hiding');
+                }, 400);
+            });
+        }
+
+        // Auto-show QR success toast on page load if TempData exists
+        const qrSuccessMessage = document.getElementById('qrSuccessMessage');
+        if (qrSuccessMessage && qrSuccessMessage.dataset.message) {
+            showToast(qrSuccessMessage.dataset.message);
+        }
+
+        if (qrSizeInput && !qrSizeInput.value) {
+            qrSizeInput.value = '300';
+        }
+        scheduleQrPreview();
+        });
+    </script>
+
+
+</body>
+</html>

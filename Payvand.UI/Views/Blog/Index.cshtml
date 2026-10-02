@@ -1,0 +1,123 @@
+@model BlogIndexViewModel
+@using System.Globalization
+@{
+    var visibleArticles = Model.FeaturedArticle == null
+        ? Model.Articles
+        : Model.Articles.Where(c => c.Id != Model.FeaturedArticle.Id).ToList();
+}
+@functions {
+    private static string PersianDate(DateTime value)
+    {
+        return value.ToString("MMMM d, yyyy", CultureInfo.GetCultureInfo("en-US"));
+    }
+
+    private static string ThemeIcon(string theme) => theme switch
+    {
+        "cyan" => "▦",
+        "emerald" => "↗",
+        "amber" => "⌾",
+        "rose" => "✦",
+        _ => "↗"
+    };
+}
+
+<link rel="stylesheet" href="~/css/Blog/blog.css" asp-append-version="true" />
+
+<section class="blog-hero">
+    <div class="blog-orb blog-orb-one"></div>
+    <div class="blog-orb blog-orb-two"></div>
+    <div class="blog-hero-content">
+        <span class="blog-eyebrow"><span></span> Payvand Journal</span>
+        <h1>Better ideas for<br><strong>better connections</strong></h1>
+        <p>Practical guides to links, QR codes, security, and digital growth.</p>
+        <form class="blog-search" method="get" asp-controller="Blog" asp-action="Index" role="search">
+            <label class="sr-only" for="blogSearch">Search articles</label>
+            <span class="blog-search-icon">⌕</span>
+            <input id="blogSearch" name="q" value="@Model.SearchQuery" placeholder="What would you like to learn?" />
+            @if (!string.IsNullOrWhiteSpace(Model.SelectedCategory))
+            {
+                <input type="hidden" name="category" value="@Model.SelectedCategory" />
+            }
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</section>
+
+<div class="blog-shell">
+    <nav class="blog-categories" aria-label="Article categories">
+        <a asp-action="Index" class="@(string.IsNullOrWhiteSpace(Model.SelectedCategory) ? "active" : null)">All articles</a>
+        @foreach (var category in Model.Categories)
+        {
+            <a asp-action="Index" asp-route-category="@category" class="@(Model.SelectedCategory == category ? "active" : null)">@category</a>
+        }
+    </nav>
+
+    @if (Model.FeaturedArticle != null)
+    {
+        var featured = Model.FeaturedArticle;
+        <article class="featured-article">
+            <a asp-action="Details" asp-route-slug="@featured.Slug" class="featured-cover theme-@featured.CoverTheme" aria-label="Read @featured.Title">
+                <span class="cover-grid"></span>
+                <span class="cover-symbol">@ThemeIcon(featured.CoverTheme)</span>
+                <span class="featured-label">Editor's pick</span>
+            </a>
+            <div class="featured-copy">
+                <div class="article-meta"><span>@featured.Category</span><i></i><time>@PersianDate(featured.PublishedAt)</time></div>
+                <h2><a asp-action="Details" asp-route-slug="@featured.Slug">@featured.Title</a></h2>
+                <p>@featured.Excerpt</p>
+                <div class="article-footer">
+                    <span>@featured.ReadingTimeMinutes min read</span>
+                    <a asp-action="Details" asp-route-slug="@featured.Slug" class="read-more">Read article <b>←</b></a>
+                </div>
+            </div>
+        </article>
+    }
+
+    <div class="blog-section-heading">
+        <div>
+            <span>Latest from the journal</span>
+            <h2>@(string.IsNullOrWhiteSpace(Model.SearchQuery) ? "Latest articles" : $"Search results for «{Model.SearchQuery}»")</h2>
+        </div>
+        <span class="article-count">@visibleArticles.Count article</span>
+    </div>
+
+    @if (visibleArticles.Count == 0)
+    {
+        <div class="blog-empty">
+            <span>⌕</span>
+            <h2>No articles found</h2>
+            <p>Try another search or browse all articles.</p>
+            <a asp-action="Index">View all articles</a>
+        </div>
+    }
+    else
+    {
+        <div class="articles-grid">
+            @foreach (var article in visibleArticles)
+            {
+                <article class="article-card">
+                    <a asp-action="Details" asp-route-slug="@article.Slug" class="article-cover theme-@article.CoverTheme" aria-label="Read @article.Title">
+                        <span class="cover-grid"></span>
+                        <span class="cover-symbol">@ThemeIcon(article.CoverTheme)</span>
+                        <span class="card-category">@article.Category</span>
+                    </a>
+                    <div class="article-card-body">
+                        <div class="article-meta"><time>@PersianDate(article.PublishedAt)</time><i></i><span>@article.ReadingTimeMinutes min</span></div>
+                        <h3><a asp-action="Details" asp-route-slug="@article.Slug">@article.Title</a></h3>
+                        <p>@article.Excerpt</p>
+                        <a asp-action="Details" asp-route-slug="@article.Slug" class="card-link">Read more <b>←</b></a>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+
+    <section class="blog-cta">
+        <div>
+            <span>Free Payvand tools</span>
+            <h2>Put your ideas into action</h2>
+            <p>Shorten a link, make a QR code, and measure the results.</p>
+        </div>
+        <a href="/#shortenerForm">Create a short link <b>←</b></a>
+    </section>
+</div>

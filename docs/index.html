@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+<title>Dashboard - Payvand</title>
+<link href="favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="favicon.ico" rel="icon" sizes="any"/>
+<link href="favicon.ico" rel="shortcut icon"/>
+
+<link href="css/Fonts/Vazirmatn.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="css/Dashboard/Dashboard.css" rel="stylesheet"/>
+<style>
+
+            .hidden {
+                display: none !important;
+            }
+
+            .result-container {
+                margin: 0 10px 1.5rem;
+                padding: 16px;
+                border: 1px solid rgba(67, 97, 238, 0.18);
+                border-radius: 12px;
+                background: linear-gradient(135deg, rgba(67, 97, 238, 0.08), rgba(32, 201, 151, 0.08));
+                box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
+                font-family: 'Vazirmatn', sans-serif;
+            }
+
+            .result-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+                color: var(--text-main);
+                font-size: 0.95rem;
+                font-weight: 700;
+            }
+
+                .result-header i {
+                    color: var(--success);
+                }
+
+            #Resultdiv {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto auto;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+                direction: rtl;
+            }
+
+            #ResultInput {
+                width: 100%;
+                min-width: 0;
+                padding: 12px 14px;
+                border: 1px solid rgba(67, 97, 238, 0.22);
+                border-radius: 10px;
+                font-family: inherit;
+                font-size: 14px;
+                color: #4361ee;
+                font-weight: 600;
+                background: #ffffff;
+                outline: none;
+                transition: all 0.2s ease;
+                box-sizing: border-box;
+                cursor: default;
+                direction: ltr;
+                text-align: left;
+            }
+
+            #Copybtn,
+            #shortenother {
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #4361ee, #7209b7);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                white-space: nowrap;
+                min-height: 46px;
+            }
+
+            #shortenother {
+                background: #ffffff;
+                color: #4361ee;
+                border: 1px solid rgba(67, 97, 238, 0.24);
+            }
+
+            .result-timer {
+                margin-top: 10px;
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .analytics-list {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .analytics-link-card {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.14);
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+            }
+
+            .analytics-link-main {
+                min-width: 0;
+            }
+
+            .analytics-short {
+                color: #4361ee;
+                font-weight: 700;
+                direction: ltr;
+                text-align: left;
+                overflow-wrap: anywhere;
+            }
+
+            .analytics-original {
+                margin-top: 0.35rem;
+                color: var(--text-muted);
+                font-size: 0.9rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                direction: ltr;
+                text-align: left;
+            }
+
+            .analytics-meta {
+                display: flex;
+                gap: 1rem;
+                margin-top: 0.65rem;
+                color: var(--text-muted);
+                font-size: 0.85rem;
+            }
+
+            .analytics-view-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                min-height: 42px;
+                padding: 10px 16px;
+                border: none;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #4361ee, #7209b7);
+                color: #ffffff;
+                font-family: inherit;
+                font-weight: 700;
+                text-decoration: none;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+            .analytics-placeholder {
+                padding: 1rem;
+                border: 1px dashed rgba(67, 97, 238, 0.28);
+                border-radius: 12px;
+                background: rgba(67, 97, 238, 0.05);
+            }
+
+            .analytics-placeholder-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 0.75rem;
+                color: var(--text-main);
+                font-weight: 800;
+            }
+
+            .analytics-back-btn {
+                margin-top: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.24);
+                border-radius: 10px;
+                background: #ffffff;
+                color: #4361ee;
+                font-family: inherit;
+                font-weight: 700;
+                padding: 10px 14px;
+                cursor: pointer;
+            }
+
+            .analytics-detail-panel {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .analytics-summary-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .analytics-summary-card {
+                padding: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+            }
+
+            .analytics-summary-label {
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .analytics-summary-value {
+                margin-top: 0.45rem;
+                color: var(--text-main);
+                font-size: 1.25rem;
+                font-weight: 800;
+                overflow-wrap: anywhere;
+            }
+
+            .analytics-chart-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+                gap: 1rem;
+            }
+
+            .analytics-chart-card,
+            .analytics-table-card {
+                padding: 1rem;
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+            }
+
+            .analytics-card-title {
+                margin-bottom: 1rem;
+                color: var(--text-main);
+                font-weight: 800;
+            }
+
+            .trade-chart-shell {
+                position: relative;
+                min-height: 320px;
+                padding: 14px;
+                border-radius: 12px;
+                background: #0f172a;
+                border: 1px solid rgba(148, 163, 184, 0.22);
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+            }
+
+                .trade-chart-shell canvas {
+                    width: 100% !important;
+                    height: 290px !important;
+                }
+
+            .city-chart-shell {
+                position: relative;
+                min-height: 320px;
+            }
+
+                .city-chart-shell canvas {
+                    width: 100% !important;
+                    height: 290px !important;
+                }
+
+            .hour-chart {
+                display: grid;
+                grid-template-columns: repeat(24, minmax(18px, 1fr));
+                align-items: end;
+                gap: 6px;
+                min-height: 220px;
+                padding-top: 1rem;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            .hour-bar-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                min-width: 0;
+                height: 210px;
+            }
+
+            .hour-bar {
+                width: 100%;
+                min-height: 4px;
+                border-radius: 8px 8px 0 0;
+                background: linear-gradient(180deg, #4361ee, #20c997);
+            }
+
+            .hour-count {
+                margin-bottom: 4px;
+                color: var(--text-muted);
+                font-size: 0.72rem;
+            }
+
+            .hour-label {
+                margin-top: 6px;
+                color: var(--text-muted);
+                font-size: 0.7rem;
+                writing-mode: vertical-rl;
+            }
+
+            .city-chart {
+                display: grid;
+                gap: 0.75rem;
+            }
+
+            .city-bar-row {
+                display: grid;
+                grid-template-columns: 90px minmax(0, 1fr) 34px;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .city-name {
+                color: var(--text-main);
+                font-size: 0.85rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .city-track {
+                height: 10px;
+                overflow: hidden;
+                border-radius: 99px;
+                background: #edf2ff;
+            }
+
+            .city-bar {
+                height: 100%;
+                border-radius: inherit;
+                background: linear-gradient(135deg, #7209b7, #4361ee);
+            }
+
+            .city-count {
+                color: var(--text-muted);
+                font-size: 0.8rem;
+                text-align: left;
+            }
+
+            .analytics-table-wrap {
+                overflow-x: auto;
+            }
+
+            .analytics-log-table {
+                width: 100%;
+                min-width: 900px;
+                border-collapse: collapse;
+            }
+
+                .analytics-log-table th,
+                .analytics-log-table td {
+                    padding: 0.8rem;
+                    border-bottom: 1px solid #edf2f7;
+                    color: var(--text-main);
+                    font-size: 0.85rem;
+                    text-align: right;
+                    vertical-align: top;
+                }
+
+                .analytics-log-table th {
+                    color: var(--text-muted);
+                    font-weight: 700;
+                    background: #f8f9fa;
+                }
+
+            .ltr-cell {
+                direction: ltr;
+                text-align: left !important;
+                max-width: 240px;
+                overflow-wrap: anywhere;
+            }
+
+            .empty-analytics {
+                padding: 1.25rem;
+                border: 1px dashed rgba(67, 97, 238, 0.24);
+                border-radius: 12px;
+                color: var(--text-muted);
+                background: rgba(67, 97, 238, 0.04);
+            }
+
+            .logout-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                background: rgba(15, 23, 42, 0.55);
+                backdrop-filter: blur(4px);
+            }
+
+            .logout-dialog {
+                width: min(420px, 100%);
+                padding: 1.5rem;
+                border-radius: 14px;
+                background: #ffffff;
+                box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+                text-align: center;
+                font-family: 'Vazirmatn', sans-serif;
+            }
+
+            .logout-dialog-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 52px;
+                height: 52px;
+                margin-bottom: 1rem;
+                border-radius: 50%;
+                background: rgba(239, 68, 68, 0.1);
+                color: #ef4444;
+                font-size: 1.3rem;
+            }
+
+            .logout-dialog-title {
+                margin-bottom: 0.5rem;
+                color: var(--text-main);
+                font-size: 1.1rem;
+                font-weight: 800;
+            }
+
+            .logout-dialog-message {
+                margin-bottom: 1.25rem;
+                color: var(--text-muted);
+                line-height: 1.8;
+            }
+
+            .logout-dialog-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .logout-dialog-btn {
+                min-height: 44px;
+                border-radius: 10px;
+                border: none;
+                font-family: inherit;
+                font-weight: 800;
+                cursor: pointer;
+            }
+
+                .logout-dialog-btn.confirm {
+                    background: #ef4444;
+                    color: #ffffff;
+                }
+
+                .logout-dialog-btn.cancel {
+                    background: #f1f5f9;
+                    color: var(--text-main);
+                }
+
+            .qr-dashboard-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+                gap: 1rem;
+                align-items: start;
+            }
+
+            .qr-panel {
+                background: #ffffff;
+                border: 1px solid rgba(67, 97, 238, 0.12);
+                border-radius: 12px;
+                padding: 1.25rem;
+                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+                margin-bottom: 1rem;
+            }
+
+            .qr-panel-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+                color: var(--text-main);
+                font-weight: 800;
+            }
+
+                .qr-panel-title span {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+            .qr-form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .qr-color-row {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+
+            .qr-color-control {
+                display: grid;
+                grid-template-columns: 44px minmax(0, 1fr);
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.65rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-main);
+            }
+
+                .qr-color-control input[type="color"] {
+                    width: 44px;
+                    height: 44px;
+                    padding: 0;
+                    border: none;
+                    border-radius: 8px;
+                    background: transparent;
+                    cursor: pointer;
+                }
+
+            .qr-size-options {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.5rem;
+            }
+
+            .qr-size-option {
+                min-height: 42px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: #ffffff;
+                color: var(--text-main);
+                font-family: inherit;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+                .qr-size-option.active {
+                    border-color: var(--primary);
+                    color: var(--primary);
+                    background: rgba(67, 97, 238, 0.08);
+                }
+
+            .qr-preview-shell {
+                display: grid;
+                gap: 0.75rem;
+                justify-items: center;
+                padding: 1rem;
+                border: 1px dashed rgba(67, 97, 238, 0.28);
+                border-radius: 12px;
+                background: rgba(67, 97, 238, 0.04);
+            }
+
+            #qrPreviewCanvas {
+                width: min(280px, 100%);
+                aspect-ratio: 1;
+                height: auto;
+                border-radius: 8px;
+                background: #ffffff;
+                box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
+            }
+
+            .qr-help-text {
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .qr-link-list,
+            .qr-grid {
+                display: grid;
+                gap: 0.75rem;
+            }
+
+            .qr-link-list {
+                max-height: 360px;
+                overflow: auto;
+                padding-left: 0.25rem;
+            }
+
+            .qr-link-option {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.85rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-main);
+            }
+
+                .qr-link-option.active {
+                    border-color: var(--primary);
+                    background: rgba(67, 97, 238, 0.08);
+                }
+
+            .qr-link-short,
+            .qr-link-original,
+            .qr-card-link {
+                direction: ltr;
+                text-align: left;
+                overflow-wrap: anywhere;
+            }
+
+            .qr-link-short {
+                color: var(--primary);
+                font-weight: 800;
+            }
+
+            .qr-link-original {
+                margin-top: 0.25rem;
+                color: var(--text-muted);
+                font-size: 0.82rem;
+            }
+
+            .qr-inline-actions {
+                display: flex;
+                gap: 0.4rem;
+            }
+
+            .qr-action-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 38px;
+                height: 38px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: #ffffff;
+                color: var(--text-muted);
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+                .qr-action-btn:hover {
+                    border-color: var(--primary);
+                    color: var(--primary);
+                }
+
+                .qr-action-btn.delete:hover {
+                    border-color: var(--error);
+                    color: var(--error);
+                }
+
+            .qr-card {
+                display: grid;
+                grid-template-columns: 86px minmax(0, 1fr) auto;
+                gap: 0.8rem;
+                align-items: center;
+                padding: 0.75rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-main);
+            }
+
+                .qr-card img {
+                    width: 86px;
+                    height: 86px;
+                    object-fit: contain;
+                    border-radius: 8px;
+                    background: #ffffff;
+                }
+
+            .qr-status {
+                margin-bottom: 1rem;
+                padding: 0.85rem 1rem;
+                border-radius: 10px;
+                font-weight: 700;
+            }
+
+                .qr-status.success {
+                    color: #166534;
+                    background: #dcfce7;
+                }
+
+                .qr-status.error {
+                    color: #991b1b;
+                    background: #fee2e2;
+                }
+
+            @media (max-width: 768px) {
+                #Resultdiv {
+                    grid-template-columns: 1fr;
+                }
+
+                #Copybtn,
+                #shortenother {
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .analytics-link-card {
+                    grid-template-columns: 1fr;
+                }
+
+                .analytics-view-btn {
+                    width: 100%;
+                }
+
+                .analytics-summary-grid,
+                .analytics-chart-grid,
+                .qr-dashboard-grid,
+                .qr-form-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .analytics-meta,
+                .qr-inline-actions {
+                    flex-wrap: wrap;
+                }
+
+                .analytics-summary-card,
+                .analytics-chart-card,
+                .analytics-table-card,
+                .qr-panel {
+                    padding: 0.9rem;
+                }
+
+                .qr-card {
+                    grid-template-columns: 72px minmax(0, 1fr);
+                    align-items: start;
+                }
+
+                    .qr-card img {
+                        width: 72px;
+                        height: 72px;
+                    }
+
+                    .qr-card .qr-inline-actions {
+                        grid-column: 1 / -1;
+                        justify-content: stretch;
+                    }
+
+                        .qr-card .qr-inline-actions .qr-action-btn,
+                        .qr-card .qr-inline-actions form {
+                            flex: 1;
+                        }
+
+                        .qr-card .qr-inline-actions .qr-action-btn {
+                            width: 100%;
+                        }
+
+                .qr-color-row,
+                .qr-size-options {
+                    grid-template-columns: 1fr;
+                }
+
+                .hour-chart {
+                    overflow-x: auto;
+                    grid-template-columns: repeat(24, 28px);
+                    padding-bottom: 0.5rem;
+                }
+            }
+
+            @media (max-width: 420px) {
+                .qr-link-option {
+                    grid-template-columns: 1fr;
+                }
+
+                    .qr-link-option .qr-inline-actions {
+                        justify-content: stretch;
+                    }
+
+                    .qr-link-option .qr-action-btn {
+                        flex: 1;
+                        width: 100%;
+                    }
+
+                .logout-dialog-actions {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+    </style>
+<link href="css/theme.css" rel="stylesheet"/>
+<link href="css/english.css" rel="stylesheet"/>
+<style>.portfolio-demo-banner{position:relative;z-index:10001;padding:9px 16px;text-align:center;background:#152244;color:#fff;font:600 12px/1.5 Arial,sans-serif}.portfolio-demo-banner+header{top:36px}@media(max-width:600px){.portfolio-demo-banner{font-size:11px}}body{direction:ltr}</style></head>
+<body><div class="portfolio-demo-banner">Portfolio preview · Dashboard navigation is interactive. Account and server actions are disabled in this public demo.</div>
+<!-- Header -->
+<header class="dashboard-header">
+<a href="#dashboard" style="text-decoration:none;">
+<div class="logo">
+<img alt="Alternate Text" class="icon icon-md" src="Images/Logo/logo.png"/>
+<span class="logo-text">Payvand</span>
+</div>
+</a>
+<div class="user-profile">
+<img alt="Payvand Logo" class="icon icon-md" src="Images/Icons/ProfileIcon.png"/>
+<div class="user-info">
+<div class="user-name">
+Portfolio guest                </div>
+<div class="user-phone"></div>
+</div>
+</div>
+</header>
+<!-- Sidebar (Desktop) -->
+<aside class="dashboard-sidebar">
+<nav>
+<ul class="nav-menu">
+<li class="nav-item">
+<a class="nav-link active" data-page="dashboard" href="#dashboard">
+<i class="fas fa-home nav-icon"></i>
+<span>Dashboard</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-page="links" href="#links">
+<i class="fas fa-link nav-icon"></i>
+<span>My links</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-page="create" href="#create">
+<i class="fas fa-plus-circle nav-icon"></i>
+<span>Create QR code</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-page="analytics" href="#analytics">
+<i class="fas fa-chart-line nav-icon"></i>
+<span>Analytics</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-page="profile" href="#profile">
+<i class="fas fa-user nav-icon"></i>
+<span>Profile</span>
+</a>
+</li>
+</ul>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="dashboard-main">
+<!-- Dashboard Page -->
+<section class="page-section active" id="dashboard">
+<!-- Stats Cards -->
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon link">
+<i class="fas fa-link"></i>
+</div>
+<div class="stat-content">
+<div class="stat-number">0</div>
+<div class="stat-label">Total links</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon click">
+<i class="fas fa-mouse-pointer"></i>
+</div>
+<div class="stat-content">
+<div class="stat-number">0</div>
+<div class="stat-label">Clicks today</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon active">
+<i class="fas fa-chart-bar"></i>
+</div>
+<div class="stat-content">
+<div class="stat-number">0</div>
+<div class="stat-label">Total clicks</div>
+</div>
+</div>
+</div>
+<!-- Recent Links -->
+<div class="recent-links">
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-history"></i>
+                        Your recent links
+                    </h2>
+<a class="view-all" data-page="links" href="#links">
+                        View all
+                    </a>
+</div>
+<div class="links-list" id="recentLinksList">
+</div>
+</div>
+</section>
+<!-- My Links Page -->
+<section class="page-section" id="links">
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-link"></i>
+                    Create a new link
+                </h2>
+</div>
+<form data-demo-form="true" data-pv-disable-submit="true" data-pv-error="Enter a valid URL." data-pv-validate="true" id="dashboardCreateLinkForm">
+<div style="display: flex; align-items: center; gap: 8px; width: 100%; direction: rtl; font-family: 'Vazirmatn', sans-serif;">
+<div style="position: relative; flex: 1; padding:10px;">
+<input data-val="true" data-val-required="The ShortenedLink field is required." id="ShortenedLink" name="ShortenedLink" type="hidden" value=""/>
+<input data-pv-required="true" data-pv-url="true" data-val="true" data-val-required="The OriginalUrl field is required." id="OriginalUrl" name="OriginalUrl" onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'" onfocus="this.style.borderColor='#4361ee'; this.style.boxShadow='0 0 0 4px rgba(67, 97, 238, 0.1)'" onmouseenter="this.style.borderColor='#adb5bd'" onmouseleave="this.style.borderColor='#e9ecef'" placeholder="Enter your URL..." style="width: 100%; padding: 12px 40px 12px 16px; border: 2px solid #e9ecef; border-radius: 12px; font-family: inherit; font-size: 14px; color: #212529; background: #ffffff; outline: none; transition: all 0.2s ease; box-sizing: border-box;" type="text" value=""/>
+</div>
+<button disabled="disabled" onmousedown="this.style.transform='translateY(0)'" onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'" style="padding: 12px 20px; background: linear-gradient(135deg, #4361ee, #7209b7); color: white; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; white-space: nowrap;" title="Available in the full application" type="submit">
+<i class="fas fa-scissors" style="font-size: 14px;"></i>
+                        Shorten link
+                    </button>
+</div>
+</form>
+<div class="result-container hidden" id="linkResult">
+<div class="result-header">
+<i class="fas fa-check-circle"></i>
+<span>Short link created successfully</span>
+</div>
+<div id="Resultdiv">
+<input id="ResultInput" onmouseenter="this.style.borderColor='#adb5bd'" onmouseleave="this.style.borderColor='#e9ecef'" readonly="" type="text" value=""/>
+<button id="Copybtn" onmousedown="this.style.transform='translateY(0)'" onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'" type="button">
+<img alt="Copy Icon" class="icon icon-sm" src="Images/Icons/CopyW.png"/>
+                        Copy
+                    </button>
+<button id="shortenother" onmousedown="this.style.transform='translateY(0)'" onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'" type="button">
+<img alt="Plus Icon" class="icon icon-sm" src="Images/Icons/Plus.png"/>
+                        Shorten another link
+                    </button>
+</div>
+</div>
+
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-link"></i>
+                    My links
+                </h2>
+<input class="form-input" id="searchLinks" placeholder="Search links..." style="max-width: 300px;" type="text"/>
+</div>
+<div class="links-grid" id="allLinksList">
+</div>
+
+</section>
+<section class="page-section" id="create">
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-qrcode"></i>
+                    Create QR Code
+                </h2>
+</div>
+<div class="qr-dashboard-grid">
+<div>
+<form class="qr-panel" data-demo-form="true" data-pv-error="Choose or enter a valid URL for your QR code." data-pv-qr="true" data-pv-validate="true" enctype="multipart/form-data" id="qrForm">
+<div class="qr-panel-title">
+<span><i class="fas fa-wand-magic-sparkles"></i> QR code settings</span>
+<button class="qr-action-btn" id="clearQrForm" title="New form" type="button">
+<i class="fas fa-plus"></i>
+</button>
+</div>
+<input data-val="true" data-val-required="The Id field is required." id="qrId" name="Qrcdoe.Id" type="hidden" value="0"/>
+<input data-val="true" data-val-required="The Size field is required." id="qrSizeInput" name="Qrcdoe.Size" type="hidden" value="300"/>
+<div class="form-group">
+<label class="form-label" for="Qrcdoe_ShortenedLinkId">Choose a short link</label>
+<select class="form-input" id="qrShortenedLinkSelect" name="Qrcdoe.ShortenedLinkId">
+<option value="">Enter a different URL</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="Qrcdoe_Link">Or use a direct URL</label>
+<input class="form-input" data-pv-url="true" dir="ltr" id="qrLinkInput" name="Qrcdoe.Link" placeholder="https://example.com/page" type="text" value=""/>
+</div>
+<div class="qr-form-grid">
+<div class="form-group">
+<label class="form-label">Colors</label>
+<div class="qr-color-row">
+<label class="qr-color-control">
+<input data-val="true" data-val-required="The ForeGroundColor field is required." id="qrForegroundColor" name="Qrcdoe.ForeGroundColor" type="color" value="#000000"/>
+<span>Foreground color</span>
+</label>
+<label class="qr-color-control">
+<input data-val="true" data-val-required="The BackGroundColor field is required." id="qrBackgroundColor" name="Qrcdoe.BackGroundColor" type="color" value="#FFFFFF"/>
+<span>Background</span>
+</label>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Output size</label>
+<div class="qr-size-options">
+<button class="qr-size-option" data-size="220" type="button">Small</button>
+<button class="qr-size-option active" data-size="300" type="button">Medium</button>
+<button class="qr-size-option" data-size="500" type="button">Large</button>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label" for="Qrcdoe_Logo">Optional logo</label>
+<input accept="image/png,image/jpeg,image/webp" class="form-input" id="qrLogoInput" name="Qrcdoe.Logo" type="file"/>
+<div class="qr-help-text">The logo applies to the preview and new output only.</div>
+</div>
+<div class="qr-preview-shell">
+<canvas height="300" id="qrPreviewCanvas" width="300"></canvas>
+<div class="qr-help-text" id="qrPreviewText">Live QR code preview</div>
+</div>
+<button class="save-btn" disabled="disabled" style="width:100%; margin-top:1rem;" title="Available in the full application" type="submit">
+<i class="fas fa-save"></i>
+                            Save QR code
+                        </button>
+</form>
+
+</div>
+<div>
+<div class="qr-panel">
+<div class="qr-panel-title">
+<span><i class="fas fa-link"></i> Short links</span>
+<span class="qr-help-text">0 link</span>
+</div>
+<input class="form-input" id="qrLinkSearch" placeholder="Search links..." style="margin-bottom:0.75rem;" type="text"/>
+<div class="qr-link-list" id="qrLinkList">
+</div>
+</div>
+<div class="qr-panel">
+<div class="qr-panel-title">
+<span><i class="fas fa-history"></i> Created QR codes</span>
+<span class="qr-help-text">0 items</span>
+</div>
+<div class="qr-grid">
+<div class="empty-analytics">You have not created a QR code yet.</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Analytics Page -->
+<section class="page-section" id="analytics">
+<div id="analyticsListView">
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-chart-line"></i>
+                        Link analytics
+                    </h2>
+</div>
+<div class="analytics-list">
+</div>
+</div>
+<div class="hidden" id="analyticsDetailView">
+<div class="section-header">
+<h2 class="section-title">
+<i class="fas fa-chart-bar"></i>
+                        Link analytics
+                    </h2>
+</div>
+<div style="margin-bottom: 1rem;">
+<button class="analytics-back-btn" id="analyticsBackToList" type="button">
+                        Back to links
+                    </button>
+</div>
+<div id="analyticsDetails">
+</div>
+</div>
+</section>
+<!-- Profile Page -->
+<section class="page-section" id="profile">
+<div class="profile-container">
+<div class="profile-card">
+<div class="profile-info">
+<img alt="Payvand Logo" class="icon icon-Logo" src="Images/Icons/ProfileIcon.png"/>
+<div>
+<h3 style="margin-bottom: 0.5rem; color: var(--text-main);">
+Portfolio guest
+                            </h3>
+<p style="color: var(--text-muted);">Member since October 2, 2026</p>
+</div>
+</div>
+<form data-demo-form="true" data-pv-disable-submit="true" data-pv-error="Enter a valid username." data-pv-validate="true" id="changeUserNameForm">
+<input data-val="true" data-val-required="The UserId field is required." id="UserId" name="UserId" type="hidden" value="24"/>
+<label class="form-label" for="DisplayName">Username</label>
+<input class="form-input" data-pv-required="true" data-pv-unique-url="/Dashboard/CheckDisplayName" data-pv-username="true" id="DisplayName" name="DisplayName" placeholder="User_123" type="text" value="کاربر مهمان"/>
+<span class="pv-field-error"></span>
+<button class="save-btn-usname" disabled="disabled" title="Available in the full application" type="submit">
+<i class="fas fa-save"></i>
+                            Save changes
+                        </button>
+</form>
+<label class="form-label">Google account email</label>
+<input class="form-input" dir="ltr" readonly="" type="email"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile) -->
+<nav class="bottom-nav">
+<a class="bottom-nav-item active" data-page="dashboard" href="#dashboard">
+<i class="fas fa-home bottom-nav-icon"></i>
+<span class="bottom-nav-text">Home</span>
+</a>
+<a class="bottom-nav-item" data-page="links" href="#links">
+<i class="fas fa-link bottom-nav-icon"></i>
+<span class="bottom-nav-text">Links</span>
+</a>
+<a class="bottom-nav-item" data-page="create" href="#create">
+<div class="create-link-btn">
+<i class="fas fa-plus"></i>
+</div>
+<span class="bottom-nav-text create-text">Create</span>
+</a>
+<a class="bottom-nav-item" data-page="analytics" href="#analytics">
+<i class="fas fa-chart-line bottom-nav-icon"></i>
+<span class="bottom-nav-text">Analytics</span>
+</a>
+<a class="bottom-nav-item" data-page="profile" href="#profile">
+<i class="fas fa-user bottom-nav-icon"></i>
+<span class="bottom-nav-text">Profile</span>
+</a>
+</nav>
+<div aria-labelledby="logoutModalTitle" aria-modal="true" class="logout-modal hidden" id="logoutModal" role="dialog">
+<div class="logout-dialog">
+<div class="logout-dialog-icon">
+<i class="fas fa-sign-out-alt"></i>
+</div>
+<div class="logout-dialog-title" id="logoutModalTitle">Sign out</div>
+<div class="logout-dialog-message">Sign out of the dashboard?</div>
+<div class="logout-dialog-actions">
+<button class="logout-dialog-btn confirm" id="confirmLogout" type="button">Yes</button>
+<button class="logout-dialog-btn cancel" id="cancelLogout" type="button">No</button>
+</div>
+</div>
+</div>
+<form data-demo-form="true" hidden="" id="logoutForm"></form>
+<!-- Overlay wrapper -->
+<!-- Global Toast -->
+<div class="toast" id="toast">
+<i class="fas fa-check-circle toast-icon"></i>
+<span id="toastMessage"></span>
+<button id="closeToast">×</button>
+</div>
+
+
+
+<script defer="True" src="demo.js"></script></body>
+</html>

@@ -1,0 +1,85 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Connection problem | Payvand</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" asp-append-version="true" />
+    <link rel="icon" href="/favicon.ico" sizes="any" asp-append-version="true">
+    <link rel="shortcut icon" href="/favicon.ico" asp-append-version="true">
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/Fonts/Vazirmatn.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/Home/404.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="broken-link-icon">
+            <i class="fas fa-wifi"></i>
+        </div>
+        <div class="expired-icon">
+            <i class="fas fa-plug-circle-xmark"></i>
+        </div>
+    </div>
+
+    <div class="error-container">
+        <div class="error-card">
+            <a href="/" class="error-logo" style="display:block;text-decoration:none;color:inherit;">
+                <div class="logo-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="logo-text">Payvand</div>
+            </a>
+
+            <div class="error-code">NET</div>
+
+            <div class="link-status">
+                <i class="fas fa-exclamation-triangle"></i>
+                Connection problem
+            </div>
+
+            <h1 class="error-title">The destination is unavailable right now</h1>
+            <p class="error-message">
+                We could not connect to the destination. The network or destination server may be temporarily unavailable.
+                Please try again in a moment.
+            </p>
+
+            <div class="error-illustration">
+                <svg class="link-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="78" stroke="url(#grad1)" stroke-width="2" fill="none" class="link-path" />
+                    <path d="M60 96 C82 72 118 72 140 96" stroke="url(#grad1)" stroke-width="5" stroke-linecap="round" class="link-path" />
+                    <path d="M76 116 C90 102 110 102 124 116" stroke="url(#grad1)" stroke-width="5" stroke-linecap="round" class="link-path" />
+                    <circle cx="100" cy="136" r="7" fill="#4361EE" />
+                    <path d="M72 72 L128 128" stroke="#ef4444" stroke-width="5" stroke-linecap="round" />
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4361EE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7209B7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="window.location.reload()">
+                    <i class="fas fa-rotate-right"></i>
+                    Try again
+                </button>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

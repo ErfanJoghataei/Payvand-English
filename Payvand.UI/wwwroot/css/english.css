@@ -1,0 +1,13 @@
+html[lang="en"],html[lang="en"] body{direction:ltr;text-align:left;font-family:'DM Sans',Arial,sans-serif}
+html[lang="en"] .page-wrapper,html[lang="en"] .container,html[lang="en"] .hero,html[lang="en"] .shortener-form,html[lang="en"] .footer,html[lang="en"] .modal-container{direction:ltr}
+html[lang="en"] input,html[lang="en"] textarea,html[lang="en"] select{direction:ltr;text-align:left}
+html[lang="en"] .form-group,html[lang="en"] .form-label,html[lang="en"] .faq-container,html[lang="en"] .accordion-body,html[lang="en"] .step-content{text-align:left}
+html[lang="en"] .hero-title{letter-spacing:-.035em;line-height:1.17}
+html[lang="en"] .nav-menu{direction:ltr}
+html[lang="en"] .nav-actions{direction:ltr}
+html[lang="en"] .nav-actions .theme-toggle{position:static;inset:auto;transform:none;margin:0 12px 0 0}
+html[lang="en"] .footer-content{direction:ltr}
+html[lang="en"] .footer-section{text-align:left}
+html[lang="en"] .modal-body{text-align:left}
+html[lang="en"] .short-url-input{direction:ltr}
+

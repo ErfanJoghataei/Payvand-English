@@ -1,0 +1,256 @@
+﻿@{
+    Layout = null;
+}
+@model ResetPassOTP
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Verify code - Payvand</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" asp-append-version="true" />
+    <link rel="icon" href="/favicon.ico" sizes="any" asp-append-version="true">
+    <link rel="shortcut icon" href="/favicon.ico" asp-append-version="true">
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/Fonts/Vazirmatn.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="/css/Account/LoginWithOTP.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+</head>
+<body>
+    <a href="/" class="logo-section" style="display:block;text-decoration:none;color:inherit;">
+        <div class="logo-icon">
+            <i class="fas fa-link"></i>
+        </div>
+        <h1 class="logo-title">Payvand</h1>
+        <p class="logo-subtitle">A smarter way to share links</p>
+    </a>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="otp-container">
+
+
+
+            <!-- OTP Card -->
+            <div class="otp-card">
+                <div class="card-header">
+                    <h1 class="card-title">Verify your one-time code</h1>
+                    <p class="card-subtitle">Enter the six-digit code sent to the phone number below.</p>
+
+                    <div class="phone-display">
+                        <img src="~/Images/Icons/Mobile.png" class="icon icon-sm" alt="Mobile Icon">
+                            <span>@Model.PhoneNumber</span>
+                        </div>
+                    </div>
+
+                    <form method="post" asp-action="ResetPassOTPPost" asp-controller="Account" data-pv-validate="true" data-pv-disable-submit="true" data-pv-error="Enter the complete verification code.">
+                      
+                        <!-- OTP Input -->
+                        <div class="otp-input-group">
+                            <label asp-for="Code" class="otp-label">Verification code</label>
+                            <div class="otp-inputs" id="otpInputs">
+
+                                <input type="hidden" asp-for="Code" id="CodeHidden" />
+                                <input type="hidden" asp-for="PhoneNumber" />
+                             
+
+                                <input type="text" class="otp-input" maxlength="1" data-index="0" autocomplete="off">
+                                <input type="text" class="otp-input" maxlength="1" data-index="1" autocomplete="off">
+                                <input type="text" class="otp-input" maxlength="1" data-index="2" autocomplete="off">
+                                <input type="text" class="otp-input" maxlength="1" data-index="3" autocomplete="off">
+                                <input type="text" class="otp-input" maxlength="1" data-index="4" autocomplete="off">
+                                <input type="text" class="otp-input" maxlength="1" data-index="5" autocomplete="off">
+        
+
+                            </div>
+                            <p class="otp-hint">Enter the six-digit code</p>
+                        </div>
+                        <div asp-validation-summary="All" class="validation-summary"></div>
+
+                        <!-- Submit Button -->
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">
+                            <span id="verifyText">Verify code</span>
+                        </button>
+                        <div class="resend-section">
+                            <div class="timer" id="timerContainer">
+                                <i class="fas fa-clock"></i>
+                                <span>Resend available in <span id="timer">90</span> seconds</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+   
+                    <form asp-action="ResentPassResetOtp"
+                          asp-controller="Account"
+                          method="post"
+                          id="resendForm">
+
+                        <input type="hidden"
+                               name="phoneNumber"
+                               value="@Model.PhoneNumber" />
+
+                        <button type="submit" class="link" id="resendBtn" disabled aria-disabled="true">
+                            <i class="fas fa-key"></i>
+                            Resend
+                        </button>
+
+                    </form>
+
+ 
+                        
+
+
+
+           
+               
+            </div>
+        </div>
+    </main>
+
+
+
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const timerElement = document.getElementById("timer");
+                const resendBtn = document.getElementById("resendBtn");
+                const timerContainer = document.getElementById("timerContainer");
+                const inputs = document.querySelectorAll(".otp-input");
+                const hidden = document.getElementById("CodeHidden");
+                const form = document.querySelector("form");
+                const resendForm = document.getElementById("resendForm");
+
+                let countdown;
+                let timeLeft = 90;
+                let isCounting = false;
+
+                // ================= OTP =================
+
+                if (inputs.length > 0) {
+                    inputs[0].focus();
+                }
+
+                function updateHidden() {
+                    let code = "";
+                    inputs.forEach(input => code += input.value);
+                    hidden.value = code;
+                }
+
+                inputs.forEach((input, index) => {
+
+                    input.addEventListener("input", function () {
+
+                        this.value = this.value.replace(/[^0-9]/g, '');
+
+                        if (this.value.length === 1 && index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+
+                        updateHidden();
+                    });
+
+                    input.addEventListener("keydown", function (e) {
+                        if (e.key === "Backspace" && this.value === "" && index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    });
+
+                    input.addEventListener("paste", function (e) {
+                        e.preventDefault();
+                        const pasteData = e.clipboardData.getData("text").replace(/[^0-9]/g, '');
+
+                        if (pasteData.length === 6) {
+                            inputs.forEach((inp, i) => {
+                                inp.value = pasteData[i] || "";
+                            });
+                            updateHidden();
+                            inputs[5].focus();
+                        }
+                    });
+                });
+
+                form.addEventListener("submit", function (e) {
+                    updateHidden();
+                    console.log("Hidden Code:", hidden.value);
+
+                    if (hidden.value.length !== 6) {
+                        e.preventDefault();
+                        alert("The code must be six digits");
+                    }
+                });
+
+                // ================= TIMER =================
+
+                function setResendDisabled(disabled) {
+                    if (!resendBtn) return;
+
+                    resendBtn.disabled = disabled;
+                    resendBtn.setAttribute("aria-disabled", disabled.toString());
+                }
+
+                function startTimer() {
+
+                    if (isCounting) return;
+
+                    isCounting = true;
+                    timeLeft = 90;
+
+                    setResendDisabled(true);
+                    timerContainer.style.display = "block";
+                    timerElement.textContent = timeLeft;
+
+                    clearInterval(countdown);
+
+                    countdown = setInterval(() => {
+                        timeLeft--;
+                        timerElement.textContent = timeLeft;
+
+                        if (timeLeft <= 0) {
+                            clearInterval(countdown);
+                            setResendDisabled(false);
+                            timerContainer.style.display = "none";
+                            isCounting = false;
+                        }
+                    }, 1000);
+                }
+
+                if (resendForm) {
+                    resendForm.addEventListener("submit", function (e) {
+                        if (isCounting) {
+                            e.preventDefault();
+                            return;
+                        }
+
+                        startTimer();
+                    });
+                }
+
+                if (resendBtn) {
+                    resendBtn.addEventListener("click", function (e) {
+                        if (isCounting) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+
+                window.addEventListener("pageshow", function () {
+                    if (isCounting) {
+                        setResendDisabled(true);
+                    }
+                });
+
+                startTimer();
+
+            });
+    </script>
+    <script src="/js/payvand-validation.js" asp-append-version="true"></script>
+
+
+</body>
+</html>

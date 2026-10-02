@@ -1,0 +1,38 @@
+@model LinkAnalyticsViewModel
+@{
+    ViewData["Title"] = "Link analytics";
+}
+
+<section class="analytics-public" dir="rtl">
+    <div class="analytics-public-card">
+        <h1>Link analytics</h1>
+        <p><strong>Short link:</strong> <a href="@Model.ShortUrl" dir="ltr">@Model.ShortUrl</a></p>
+        <p class="analytics-target" title="@Model.OriginalUrl"><strong>Destination:</strong> <span dir="ltr">@Model.OriginalUrl</span></p>
+        <div class="analytics-total">@Model.TotalClicks <small>Clicks</small></div>
+
+        <h2>20 recent visits</h2>
+        @if (Model.RecentClicks.Count == 0)
+        {
+            <p>No visits recorded yet.</p>
+        }
+        else
+        {
+            <div class="analytics-table-wrap">
+                <table class="analytics-table">
+                    <thead><tr><th>Time</th><th>Location</th><th>Device</th><th>Browser</th></tr></thead>
+                    <tbody>
+                    @foreach (var click in Model.RecentClicks)
+                    {
+                        <tr>
+                            <td>@click.ClickedAt.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td>
+                            <td>@string.Join("، ", new[] { click.Country, click.City }.Where(x => !string.IsNullOrWhiteSpace(x)))</td>
+                            <td>@click.Device</td>
+                            <td>@click.Browser</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>

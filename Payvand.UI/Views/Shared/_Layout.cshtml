@@ -1,0 +1,367 @@
+﻿@model LinkViewModel
+@{
+    var seo = ViewData["Seo"] as SeoMetadata ?? new SeoMetadata();
+    var canonicalUrl = seo.ToAbsoluteUrl(Context.Request, seo.CanonicalPath);
+    var imageUrl = seo.ToAbsoluteUrl(Context.Request, seo.ImagePath);
+    var robots = seo.NoIndex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    var siteSchema = System.Text.Json.JsonSerializer.Serialize(new SeoSiteSchema
+    {
+        Url = seo.ToAbsoluteUrl(Context.Request, "/"),
+        Description = seo.Description
+    });
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="@seo.Description" />
+    <meta name="keywords" content="@seo.Keywords" />
+    <meta name="robots" content="@robots" />
+    <meta name="theme-color" content="#4361ee" />
+    <meta name="application-name" content="Payvand" />
+    <meta name="apple-mobile-web-app-title" content="Payvand" />
+    <link rel="canonical" href="@canonicalUrl" />
+    <link rel="icon" href="~/favicon.ico" sizes="any" />
+    <meta property="og:site_name" content="Payvand" />
+    <meta property="og:locale" content="@seo.Locale" />
+    <meta property="og:type" content="@seo.Type" />
+    <meta property="og:title" content="@seo.Title" />
+    <meta property="og:description" content="@seo.Description" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:image" content="@imageUrl" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@seo.Title" />
+    <meta name="twitter:description" content="@seo.Description" />
+    <meta name="twitter:image" content="@imageUrl" />
+    <script type="application/ld+json">@Html.Raw(siteSchema)</script>
+    @if (ViewData["StructuredData"] is string structuredData)
+    {
+        <script type="application/ld+json">@Html.Raw(structuredData)</script>
+    }
+    <title>@seo.Title</title>
+    <script type="importmap"></script>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+
+    <link rel="stylesheet" href="~/css/Fonts/Vazirmatn.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Payvand.UI.styles.css" asp-append-version="true" />
+    <link href="~/css/Home/Contact.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/english.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/english.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" asp-append-version="true" />
+    <link rel="icon" href="/favicon.ico" sizes="any" asp-append-version="true">
+    <link rel="shortcut icon" href="/favicon.ico" asp-append-version="true">
+    <script src="/js/Home/site.js"></script>
+ 
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- هدر سایت -->
+        <header class="header">
+            <nav class="navbar">
+                <button class="menu-toggle">☰</button>
+                <a href="/" style="text-decoration:none;">
+                    <div class="logo">
+                        <img src="/Images/Logo/logo.png" class="icon icon-Logo " alt="Payvand Logo">
+
+                        @* <span class="logo-text">Payvand</span> *@
+                    </div>
+                </a>
+
+
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link active">  <img src="~/Images/Icons/Home.png" class="icon icon-sm" alt="Home Icon"> Home</a></li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Blog" class="nav-link">
+                            <svg class="icon icon-sm blog-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11a2 2 0 0 1 2 2v15a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 20.5v-15Z" />
+                                <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17a2 2 0 0 1 2-2h2.5a2.5 2.5 0 0 1 2.5 2.5v-15Z" />
+                            </svg>
+                            Journal
+                        </a>
+                    </li>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li>
+                            <a asp-action="Dash" asp-controller="Dashboard" asp-fragment="create" class="nav-link qr-header-button" value="qrcode">
+                                <img src="/Images/Icons/QrCode.png" class="icon icon-sm qr-header-icon" alt="QR Code Icon">
+                                <span class="qr-header-label">QrCode</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="/#shortenerForm" class="nav-link qr-header-button" value="qrcode">
+                                <img src="/Images/Icons/QrCode.png" class="icon icon-sm qr-header-icon" alt="QR Code Icon">
+                                <span class="qr-header-label">QrCode</span>
+                            </a>
+                        </li>
+                    }
+                    <li><a href="javascript:void(0)" data-section="features" class="nav-link">  <img src="/Images/Icons/Featurse.png" class="icon icon-sm" alt="Features Icon"> Features</a></li>
+                    <li><a href="javascript:void(0)" data-section="faq" class="nav-link">  <img src="/Images/Icons/Guide.png" class="icon icon-sm" alt="Guide Icon"> Help</a></li>
+                 
+                </ul>
+
+                <div class="nav-actions">
+                    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Enable dark mode" aria-pressed="false">
+                        <span class="theme-toggle-icons" aria-hidden="true">
+                            <svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M20.5 15.6A9 9 0 0 1 8.4 3.5 9 9 0 1 0 20.5 15.6Z" /></svg>
+                            <svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></svg>
+                        </span>
+                        <span class="theme-toggle-label">Dark</span>
+                    </button>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-action="Dash" asp-controller="Dashboard" class="nav-link">
+                            <img src="/Images/Icons/ProfileIcon.png" class="icon icon-profile" alt="Guide Icon">
+                            Dashboard
+                        </a>
+                    }
+                    else
+                    {
+                        <a style="text-decoration:none;" asp-action="Login" asp-controller="Account" class="btn btn-primary">
+                            <img src="/Images/Icons/LoginLogo.png" class="icon icon-sm" alt="Login Icon">
+                            Sign in
+                        </a>
+                    }
+             
+  
+                 
+                
+                </div>
+
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="/" class="footer-logo" style="text-decoration:none;color:inherit;">
+                        <img src="/Images/Logo/logo.png" class="icon icon-Logo" alt="">
+                        Payvand
+                    </a>
+                    <p class="footer-description">
+                        Simple tools for smarter links.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://payvnd.ir/pH4ZtQ" target="_blank" class="social-link"> <img src="/Images/Icons/Telegram.png" class="icon icon-sm" alt="Telegram Icon"></a>
+                        <a href="https://payvnd.ir/3JnvSZ" target="_blank" class="social-link"> <img src="/Images/Icons/Instagram.png" class="icon icon-sm" alt="Instagram Icon"></a>
+                        @* <a href="#" class="social-link"> <img src="/Images/Icons/linkedin.png" class="icon icon-sm" alt="Linkedin Icon"></a> *@
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="">Home</a></li>
+                        <li><a asp-action="Index" asp-controller="Blog"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="">Payvand Journal</a></li>
+                         <li><a href="#" data-section="features"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="Left Arrow"> Features</a></li> 
+                        <li><a href="#" data-section="faq"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="Left Arrow">Help</a></li>
+                        <li><a href="#" id="ContactBtn"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="Left Arrow">Contact</a></li>
+
+
+
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="@Url.Action("Privacy", "Terms_Privacy")"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="Left Arrow"> Privacy</a></li>
+                        <li><a href="@Url.Action("Terms", "Terms_Privacy")"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="Left Arrow">  Terms of use</a></li>
+                        <li><a href="#" id="ViolationReportBtn"><img src="/Images/Icons/LeftArrow.png" class="icon icon-sm" alt="Left Arrow">  Report abuse</a></li>
+                        
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact us</h4>
+                    <ul class="footer-contact">
+                        <li><img src="/Images/Icons/Email.png" class="icon icon-sm" alt="Email Icon">payvandweb@gmail.com</li>
+                        @* <li><img src="/Images/Icons/Phone.png" class="icon icon-sm" alt="Phone Icon"> ۰۲۱-۱۲۳۴۵۶۷۸</li> *@
+                        <li><img src="/Images/Icons/Location.png" class="icon icon-sm" alt="Location Icon">Karaj, Iran</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Payvand. All rights reserved.</p>
+                <p>Made with care.</p>
+            </div>
+
+
+        </div>
+
+
+
+
+        <!-- Contact Modal -->
+        <div class="modal-overlay" id="contactModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <button class="close-button" id="closeModal">&times;</button>
+                    <h2 class="modal-title">Contact us</h2>
+                </div>
+                <div class="modal-body">
+
+                    <form asp-action="SendMessage" asp-controller="Home" id="contactForm" data-pv-validate="true" data-pv-disable-submit="true" data-pv-error="Complete the contact form correctly.">
+                        <div asp-validation-summary="ModelOnly"></div>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            int? userid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                            <input type="hidden" asp-for="Messagemodel.UserId" value="@userid" />
+                        }                                           
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Messagemodel.FullName">Full name</label>
+                            <input type="text" id="name" class="form-control" asp-for="Messagemodel.FullName" placeholder="Enter your name" data-pv-required="true" data-pv-min="2">
+                                <span asp-validation-for="Messagemodel.FullName"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" asp-for="Messagemodel.Email">Email</label>
+                                <input type="email" id="email" class="form-control" asp-for="Messagemodel.Email" placeholder="Enter a valid email address" data-pv-required="true" data-pv-email="true">
+                                    <span asp-validation-for="Messagemodel.Email"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="Messagemodel.Topic">Subject</label>
+                                    <input type="text" id="subject" asp-for="Messagemodel.Topic" class="form-control" placeholder="Enter a subject" data-pv-required="true" data-pv-min="3">
+                                        <span asp-validation-for="Messagemodel.Topic"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="Messagemodel.Message">Message</label>
+                                        <textarea id="message" class="form-control" asp-for="Messagemodel.Message" placeholder="Write your message..." data-pv-required="true" data-pv-min="10"></textarea>
+                                        <span asp-validation-for="Messagemodel.Message"></span>
+                                    </div>
+                                    <button type="submit" class="submit-button">Send message</button>
+                                </form>
+                                <div class="contact-info">
+                                    <div class="info-item"><img src="/Images/Icons/Email.png" class="icon icon-sm" alt=""><span>Email: payvandweb@gmail.com</span></div>
+                  
+                                    <div class="info-item"><img src="/Images/Icons/Location.png" class="icon icon-sm" alt=""><span>Location: Karaj, Iran</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Violation Report Modal -->
+                <div class="modal-overlay" id="violationReportModal">
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <button class="close-button" id="closeViolationReportModal">&times;</button>
+                            <h2 class="modal-title">Report abuse</h2>
+                        </div>
+                        <div class="modal-body">
+                            @if (TempData["ViolationReportSuccess"] != null)
+                            {
+                                <div class="pv-form-error show" style="background:#dcfce7;color:#166534;">@TempData["ViolationReportSuccess"]</div>
+                            }
+                            @if (TempData["ViolationReportError"] != null)
+                            {
+                                <div class="pv-form-error show">@TempData["ViolationReportError"]</div>
+                            }
+
+                            <form asp-action="SendViolationReport" asp-controller="Home" id="violationReportForm" data-pv-validate="true" data-pv-disable-submit="true" data-pv-error="Complete the report form correctly.">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="ViolationReport.ReportedUrl">Reported URL</label>
+                                    <input type="text"
+                                           id="reportedUrl"
+                                           class="form-control"
+                                           asp-for="ViolationReport.ReportedUrl"
+                                           placeholder="payvand.ir/abc123"
+                                           dir="ltr"
+                                           data-pv-required="true">
+                                    <span asp-validation-for="ViolationReport.ReportedUrl"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="ViolationReport.Reason">Reason for report</label>
+                                    <select id="reportReason"
+                                            class="form-control"
+                                            asp-for="ViolationReport.Reason"
+                                            data-pv-required="true">
+                                        <option value="">Select a reason</option>
+                                        <option value="phishing">Phishing or impersonation</option>
+                                        <option value="malware">Malware</option>
+                                        <option value="spam">Spam</option>
+                                        <option value="abuse">Abusive or illegal content</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <span asp-validation-for="ViolationReport.Reason"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="ViolationReport.Description">Details</label>
+                                    <textarea id="reportDescription"
+                                              class="form-control"
+                                              asp-for="ViolationReport.Description"
+                                              placeholder="Describe the problem..."
+                                              data-pv-required="true"
+                                              data-pv-min="10"></textarea>
+                                    <span asp-validation-for="ViolationReport.Description"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="ViolationReport.ReporterEmail">Your email (optional)</label>
+                                    <input type="email"
+                                           id="reporterEmail"
+                                           class="form-control"
+                                           asp-for="ViolationReport.ReporterEmail"
+                                           placeholder="name@example.com"
+                                           dir="ltr"
+                                           data-pv-email="true">
+                                    <span asp-validation-for="ViolationReport.ReporterEmail"></span>
+                                </div>
+
+                                <button type="submit" class="submit-button">Submit report</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                @if (User.Identity?.IsAuthenticated != true)
+                {
+                    <div class="modal-overlay" id="qrLoginPromptModal" aria-hidden="true">
+                        <div class="modal-container qr-login-dialog" role="dialog" aria-modal="true" aria-labelledby="qrLoginPromptTitle">
+                            <div class="modal-header">
+                                <button type="button" class="close-button" id="closeQrLoginPromptModal">&times;</button>
+                                <h2 class="modal-title" id="qrLoginPromptTitle">Sign in required</h2>
+                            </div>
+                            <div class="modal-body">
+                                <div class="qr-login-icon">
+                                    <img src="~/Images/Icons/QrCodeW.png" class="icon logo" alt="">
+                                </div>
+                                <p class="qr-login-message">Sign in to create a QR code.</p>
+                                <div class="qr-login-actions">
+                                    <button type="button" class="btn btn-secondary" id="qrLoginBackBtn">Back</button>
+                                    <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Sign in</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+ 
+                <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+ 
+                <script src="~/js/Home/Contact.js" asp-append-version="true"></script>
+                <script src="~/js/payvand-validation.js" asp-append-version="true"></script>
+
+                @await RenderSectionAsync("Scripts", required: false)
+            </body>
+
+
+        </html>

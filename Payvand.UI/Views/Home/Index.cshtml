@@ -1,0 +1,425 @@
+ @model LinkViewModel
+ 
+
+@{
+    ViewData["Seo"] = new SeoMetadata
+    {
+        Title = "Payvand | Fast, secure, free link shortener",
+        Description = "Shorten long links, create QR codes, and track clicks in one simple dashboard.",
+        Keywords = "Payvand, free link shortener, QR code, link analytics, short links",
+        CanonicalPath = "/"
+    };
+}
+
+<link href="/css/Home/site.css" rel="stylesheet" asp-append-version="true" />
+<link href="/css/Home/LoginReq.css" rel="stylesheet" asp-append-version="true" />
+
+
+    <!-- قهرمان سایت -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Make every <span class="highlight">long link</span>
+                <span class="highlight">short and shareable</span>
+            </h1>
+            @* <p class="hero-subtitle">
+                سرویس رایگان Link shortening . سریع، امن و بدون محدودیت
+            </p> *@
+        <!-- فرم short‌سازی -->
+        <form asp-action="LinkShortener" asp-controller="Home" method="post" id="shortenerForm" data-pv-validate="true" data-pv-error="Enter a valid URL.">
+            <div class="shortener-form">
+                <div class="input-group">
+                    <input type="hidden" asp-for="ShortenedLink" />
+                    <div class="url-input-wrapper">
+                        <input type="text"
+                               asp-for="OriginalUrl"
+                               id="url-input"
+                               class="url-input"
+                               placeholder="Paste your long URL here"
+                               data-pv-required="true"
+                               data-pv-url="true" />
+                    </div>
+                    <button id="shorten-btn" class="shorten-btn" type="submit">
+                        <img src="/Images/Icons/Cut.png" class="icon icon-md" alt="Cut Icon">
+                        Shorten link
+                    </button>
+                </div>
+                <div class="policy-hint">
+                    Free to start | No account required
+                </div>
+            </div>
+        </form>
+            <!-- نتیجه short‌سازی (hidden template, JS پر می‌کند) -->
+            <div id="resultContainer" class="result-container hidden">
+                <div class="short-link">
+                    <input type="text" readonly value="" id="shortLinkInput" class="short-url-input" />
+                    <button id="copyBtn" class="copy-btn">Copy</button>
+                </div>
+                <div class="result-actions">
+                    <button id="newShortenBtn" class="btn-action">Shorten another link</button>
+                    <form asp-action="DownloadQrCode" asp-controller="Home" method="post" class="inline-action-form">
+                        <input type="hidden" name="shortLinkId" id="qrCodeLinkId" value="">
+                        <button type="submit" class="btn-action">Download QR code</button>
+                    </form>
+                    <a id="analyticsLink" href="" class="btn-action">View link analytics</a>
+                </div>
+            </div>
+
+            <!-- Login Required Prompt (hidden template, JS نمایش می‌دهد) -->
+            <div id="loginPromptContainer" class="login-prompt-card hidden">
+                <div class='card-content'>
+                   
+                    <img src="/Images/Logo/logo.png" class="icon icon-Logo " alt="Payvand Logo">
+                
+                    <h3 class='card-title'>You reached your monthly link limit</h3>
+                    <p class='card-message'>
+                        Sign in to create more short links.
+                    </p>
+                    <div class='button-group'>
+                        <a asp-action="Login" asp-controller="Account" class="btn btn-primary" style="text-decoration:none; color:white;">
+                            <i class='fas fa-sign-in-alt'></i>
+                            Sign in / Register
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+        
+        
+
+        <!-- alert برای Message خطا -->
+        <div class="custom-alert" id="customAlert" style="display:none;"></div>
+
+
+        </div>
+
+        <!-- Analytics زنده -->
+        <div class="live-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                <img src="/Images/Icons/User.png" class="icon icon-md " alt="User Icon">
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number" id="user-count">@Model.UsersCount</div>
+                    <div class="stat-label">Active users</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <img src="/Images/Icons/Done.png" class="icon icon-md" alt="Done Icon">
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number" id="link-count">@Model.LinksCount</div>
+                    <div class="stat-label">Links shortened</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <img src="~/Images/Icons/Click.png" class="icon icon-md" alt="Click Icon">
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number" id="click-count">@Model.TodayClicksCount</div>
+                    <div class="stat-label">Clicks</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2 class="section-title">Why Payvand?</h2>
+        <p class="section-subtitle">Everything you need to manage and share your links</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/Images/Icons/Fast.png" class="icon icon-md" alt="Fast Icon">
+                </div>
+                <h3 class="feature-title">Fast and reliable</h3>
+                <p class="feature-description">
+                    Create short links in seconds and share them anywhere.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/Images/Icons/Secure.png" class="icon icon-md" alt="Secure Icon">
+                </div>
+                <h3 class="feature-title">Safe and private</h3>
+                <p class="feature-description">
+                    Manage your links with privacy and security in mind.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                <img src="/Images/Icons/statistics.png" class="icon icon-md" alt="Statistics Icon">
+                </div>
+                <h3 class="feature-title">Detailed analytics</h3>
+                <p class="feature-description">
+                    Understand clicks, locations, devices, and trends.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/Images/Icons/QrCodeW.png" class="icon icon-md" alt="QrCode Icon">
+                </div>
+                <h3 class="feature-title">Free QR codes</h3>
+                <p class="feature-description">
+                    Create a QR code for any short link.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <h2 class="section-title">Tools to help your links go further</h2>
+                <p class="section-subtitle">Create, share, and measure links in one place.</p>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-item active">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                         <img src="/Images/Icons/Link.png" class="icon icon-sm" alt="Link Icon">
+                        </span>
+                        <span class="accordion-title">Link shortening</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Turn a long URL into a clean, shareable link in seconds.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <i class="fas fa-chart-line">     <img src="/Images/Icons/Chart.png" class="icon icon-sm" alt="Chart Icon"></i>
+                        </span>
+                        <span class="accordion-title">Click analytics</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>See when and where people open your links so you can learn what works.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <i class="fas fa-pen">     <img src="/Images/Icons/Pencil.png" class="icon icon-sm" alt="Pencil Icon"></i>
+                        </span>
+                        <span class="accordion-title">Custom links</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Choose memorable names for links you share with your audience.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <i class="fas fa-qrcode">    <img src="/Images/Icons/QrCode.png" class="icon icon-sm" alt="QrCode Icon"></i>
+                        </span>
+                        <span class="accordion-title">QR code creation</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Create a QR code for your short link and use it online or in print.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <i class="fas fa-shield-alt">     <img src="/Images/Icons/Shield.png" class="icon icon-sm" alt="Shield Icon"></i>
+                        </span>
+                        <span class="accordion-title">Secure and dependable</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Share links with confidence and keep track of their activity.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- نحوه کار -->
+    <section class="how-it-works">
+        <h2 class="section-title">How it works</h2>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Paste your link</h3>
+                    <p>Enter your original URL in the box above.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Click Shorten link</h3>
+                    <p>Payvand creates a short link for you.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Copy and share</h3>
+                    <p>Use your new link anywhere you need it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="faq">
+        <div class="faq-container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently asked questions</h2>
+                <p class="section-subtitle">Answers to common questions about Payvand.</p>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-item active">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <img src="/Images/Icons/QuestionMark.png" class="icon icon-sm" alt="QuestionMark Icon">
+                        </span>
+                        <span class="accordion-title">What is Payvand?</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Payvand turns a long URL into a short link. People who open it are redirected to the original address.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <img src="/Images/Icons/DollarSigne.png" class="icon icon-sm" alt="DollarSigne Icon">
+                        </span>
+                        <span class="accordion-title">Is Payvand free?</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>The basic link shortener is free. Check your account for available limits and features.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <img src="/Images/Icons/UserSequred.png" class="icon icon-sm" alt="UserSequred Icon">
+                        </span>
+                        <span class="accordion-title">Are my links safe?</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Payvand uses HTTPS and checks links for harmful destinations. Report suspicious links using the form below.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <img src="/Images/Icons/Link.png" class="icon icon-sm" alt="Link Icon">
+                        </span>
+                        <span class="accordion-title">Do short links expire?</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Links remain active until you remove them, subject to your account settings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <img src="/Images/Icons/Chart.png" class="icon icon-sm" alt="Chart Icon">
+                        </span>
+                        <span class="accordion-title">Which analytics are available?</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>View click counts and available information about visitors, devices, and traffic sources.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="accordion-icon">
+                        <img src="/Images/Icons/Support.png" class="icon icon-sm" alt="Support Icon">
+                        </span>
+                        <span class="accordion-title">How can I contact support?</span>
+                        <span class="accordion-arrow">
+                        <img src="/Images/Icons/ArrowDown.png" class="icon icon-sm" alt="DownArrow Icon">
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Use the contact form or email payvandweb@gmail.com and the team will get back to you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/Home/linkShortener.js" asp-append-version="true"></script>
+

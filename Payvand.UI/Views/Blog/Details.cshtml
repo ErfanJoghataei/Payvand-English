@@ -1,0 +1,96 @@
+@model BlogDetailsViewModel
+@using System.Globalization
+@functions {
+    private static string PersianDate(DateTime value)
+    {
+        return value.ToString("MMMM d, yyyy", CultureInfo.GetCultureInfo("en-US"));
+    }
+}
+
+<link rel="stylesheet" href="~/css/Blog/blog.css" asp-append-version="true" />
+
+<div class="article-page">
+    <nav class="article-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>←</span><a asp-action="Index">Journal</a><span>←</span><span>@Model.Article.Category</span>
+    </nav>
+
+    <header class="article-header">
+        <div class="article-header-copy">
+            <span class="article-category">@Model.Article.Category</span>
+            <h1>@Model.Article.Title</h1>
+            <p>@Model.Article.Excerpt</p>
+            <div class="article-byline">
+                <div class="author-avatar">P</div>
+                <div><strong>@Model.Article.AuthorName</strong><span>@PersianDate(Model.Article.PublishedAt) · @Model.Article.ReadingTimeMinutes min read</span></div>
+            </div>
+        </div>
+        <div class="article-hero-cover theme-@Model.Article.CoverTheme" aria-hidden="true">
+            <span class="cover-grid"></span>
+            <span class="cover-symbol">✦</span>
+            <span class="cover-word">PAYVAND</span>
+        </div>
+    </header>
+
+    <div class="article-layout">
+        <aside class="article-aside">
+            <div class="toc-card">
+                <strong>In this article</strong>
+                @for (var index = 0; index < Model.ContentBlocks.Count; index++)
+                {
+                    if (Model.ContentBlocks[index].Type == "heading")
+                    {
+                        <a href="#section-@index">@Model.ContentBlocks[index].Text</a>
+                    }
+                }
+            </div>
+        </aside>
+
+        <article class="article-content">
+            @for (var index = 0; index < Model.ContentBlocks.Count; index++)
+            {
+                var block = Model.ContentBlocks[index];
+                if (block.Type == "heading")
+                {
+                    <h2 id="section-@index">@block.Text</h2>
+                }
+                else if (block.Type == "list")
+                {
+                    <div class="article-list-item"><span>✓</span><p>@block.Text</p></div>
+                }
+                else
+                {
+                    <p>@block.Text</p>
+                }
+            }
+
+            <div class="article-inline-cta">
+                <div><span>Payvand makes sharing simple</span><strong>Create your first short link now</strong></div>
+                <a href="/#shortenerForm">Start for free ←</a>
+            </div>
+
+            <footer class="article-tags">
+                <span>Tags</span>
+                @foreach (var keyword in (Model.Article.Keywords ?? Model.Article.Category).Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <a asp-action="Index" asp-route-q="@keyword">#@keyword.Replace(" ", "_")</a>
+                }
+            </footer>
+        </article>
+    </div>
+
+    @if (Model.RelatedArticles.Count > 0)
+    {
+        <section class="related-section">
+            <div class="blog-section-heading"><div><span>You may also like</span><h2>Related articles</h2></div></div>
+            <div class="related-grid">
+                @foreach (var item in Model.RelatedArticles)
+                {
+                    <a asp-action="Details" asp-route-slug="@item.Slug" class="related-card">
+                        <span class="related-mark theme-@item.CoverTheme">✦</span>
+                        <div><small>@item.Category · @item.ReadingTimeMinutes min</small><h3>@item.Title</h3><span>Read article ←</span></div>
+                    </a>
+                }
+            </div>
+        </section>
+    }
+</div>

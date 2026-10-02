@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Payvand.BusinessLogic/Payvand.BusinessLogic.csproj" />
+  <Project Path="Payvand.DAL/Payvand.DAL.csproj" />
+  <Project Path="Payvand.UI/Payvand.UI.csproj" />
+</Solution>
