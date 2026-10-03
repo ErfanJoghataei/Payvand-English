@@ -5,7 +5,7 @@ html[lang="en"] .form-group,html[lang="en"] .form-label,html[lang="en"] .faq-con
 html[lang="en"] .hero-title{letter-spacing:-.035em;line-height:1.17}
 html[lang="en"] .nav-menu{direction:ltr}
 html[lang="en"] .nav-actions{direction:ltr}
-html[lang="en"] .nav-actions .theme-toggle{position:static;inset:auto;transform:none;margin:0 12px 0 0}
+html[lang="en"] .nav-actions .theme-toggle{position:relative;inset:auto;transform:none;margin:0 12px 0 0}
 html[lang="en"] .footer-content{direction:ltr}
 html[lang="en"] .footer-section{text-align:left}
 html[lang="en"] .modal-body{text-align:left}
