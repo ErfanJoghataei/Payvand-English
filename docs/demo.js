@@ -12,6 +12,40 @@ function showPage() {
 }
 window.addEventListener('hashchange', showPage);
 showPage();
+
+for (const sectionId of ['features', 'faq']) {
+  const section = document.getElementById(sectionId);
+  if (!section) continue;
+
+  const items = [...section.querySelectorAll('.accordion-item')];
+  const setOpen = (item, open) => {
+    const header = item.querySelector('.accordion-header');
+    const content = item.querySelector('.accordion-content');
+    const body = item.querySelector('.accordion-body');
+    if (!header || !content || !body) return;
+    item.classList.toggle('active', open);
+    header.setAttribute('aria-expanded', String(open));
+    content.style.height = open ? `${body.scrollHeight}px` : '0px';
+  };
+
+  items.forEach((item, index) => {
+    const header = item.querySelector('.accordion-header');
+    const content = item.querySelector('.accordion-content');
+    if (!header || !content) return;
+    content.id = `${sectionId}-panel-${index + 1}`;
+    header.setAttribute('aria-controls', content.id);
+    setOpen(item, item.classList.contains('active'));
+    header.addEventListener('click', () => {
+      const shouldOpen = !item.classList.contains('active');
+      items.forEach(other => setOpen(other, other === item && shouldOpen));
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    items.filter(item => item.classList.contains('active')).forEach(item => setOpen(item, true));
+  });
+}
+
 document.querySelectorAll('[data-demo-form]').forEach(form => {
   form.addEventListener('submit', event => event.preventDefault());
 });
