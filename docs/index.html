@@ -4,1136 +4,600 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-
-<title>Dashboard - Payvand</title>
-<link href="favicon.ico" rel="icon" type="image/x-icon"/>
+<meta content="Shorten long links, create QR codes, and track clicks in one simple dashboard." name="description"/>
+<meta content="Payvand, free link shortener, QR code, link analytics, short links" name="keywords"/>
+<meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
+<meta content="#4361ee" name="theme-color"/>
+<meta content="Payvand" name="application-name"/>
+<meta content="Payvand" name="apple-mobile-web-app-title"/>
 <link href="favicon.ico" rel="icon" sizes="any"/>
-<link href="favicon.ico" rel="shortcut icon"/>
+<meta content="Payvand" property="og:site_name"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="website" property="og:type"/>
+<meta content="Payvand | Fast, secure, free link shortener" property="og:title"/>
+<meta content="Shorten long links, create QR codes, and track clicks in one simple dashboard." property="og:description"/>
+<meta content="https://erfanjoghataei.github.io/Payvand-English/" property="og:url"/>
+<meta content="https://erfanjoghataei.github.io/Payvand-English/Images/Logo/logo.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Payvand | Fast, secure, free link shortener" name="twitter:title"/>
+<meta content="Shorten long links, create QR codes, and track clicks in one simple dashboard." name="twitter:description"/>
+<meta content="https://erfanjoghataei.github.io/Payvand-English/Images/Logo/logo.png" name="twitter:image"/>
+<title>Payvand | Fast, secure, free link shortener</title>
+<script src="js/theme.js?v=bW-aOjx31ueXR8tmykn7ubf7oOZHrX5BbZyp9NOafCg"></script>
+<link href="css/Fonts/Vazirmatn.css?v=Yr-kcojYnvbN6wJA-B0DH2YSS-ohwwx17djbolKoN5s" rel="stylesheet"/>
+<link href="css/Home/site.css?v=-wdfD6kCHuCfxP-0UimwwGs7F8Zll-hLJoPfCvYMz2c" rel="stylesheet"/>
+<link href="Payvand.UI.styles.css?v=gO_RX54i2z8Yo8VI2ybD9PQnbj8R1QTJ5hEMalgadT8" rel="stylesheet"/>
+<link href="css/Home/Contact.css" rel="stylesheet"/>
+<link href="css/theme.css?v=VKK-2_IEa52J5gbwQ32rbc2KxmZVsV-fwdC8UTf-9BI" rel="stylesheet"/>
+<link href="css/english.css?v=pqDBkj9_6IHhZjxVU0WkHEiP8TNmxTxDv-3dJ5yDS1I" rel="stylesheet"/>
+<link href="css/english.css?v=pqDBkj9_6IHhZjxVU0WkHEiP8TNmxTxDv-3dJ5yDS1I" rel="stylesheet"/>
+<link href="favicon.ico?v=M99SxDGOllb4gy5ilrcnsdpa4C7pzJbQvpX6XCi3LJg" rel="icon" type="image/x-icon"/>
+<link href="favicon.ico?v=M99SxDGOllb4gy5ilrcnsdpa4C7pzJbQvpX6XCi3LJg" rel="icon" sizes="any"/>
+<link href="favicon.ico?v=M99SxDGOllb4gy5ilrcnsdpa4C7pzJbQvpX6XCi3LJg" rel="shortcut icon"/>
+<script src="js/Home/site.js"></script>
+<style>.portfolio-demo-banner{position:relative;z-index:10001;padding:9px 16px;text-align:center;background:#152244;color:#fff;font:600 12px/1.5 Arial,sans-serif}</style></head>
+<body><div class="portfolio-demo-banner">Portfolio preview · Browse the site and dashboard. Link creation and contact forms require the full application.</div>
+<div b-pand1dq8lx="" class="page-wrapper">
+<!-- هدر سایت -->
+<header b-pand1dq8lx="" class="header">
+<nav b-pand1dq8lx="" class="navbar">
+<button b-pand1dq8lx="" class="menu-toggle">☰</button>
+<a b-pand1dq8lx="" href="index.html" style="text-decoration:none;">
+<div b-pand1dq8lx="" class="logo">
+<img alt="Payvand Logo" b-pand1dq8lx="" class="icon icon-Logo" src="Images/Logo/logo.png"/>
+</div>
+</a>
+<ul b-pand1dq8lx="" class="nav-menu">
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" class="nav-link active" href="index.html"> <img alt="Home Icon" class="icon icon-sm" src="Images/Icons/Home.png"/> Home</a></li>
+<li b-pand1dq8lx="">
+<a class="nav-link" href="journal.html">
+<svg aria-hidden="true" b-pand1dq8lx="" class="icon icon-sm blog-nav-icon" fill="none" viewbox="0 0 24 24">
+<path b-pand1dq8lx="" d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11a2 2 0 0 1 2 2v15a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"></path>
+<path b-pand1dq8lx="" d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17a2 2 0 0 1 2-2h2.5a2.5 2.5 0 0 1 2.5 2.5v-15Z"></path>
+</svg>
 
-<link href="css/Fonts/Vazirmatn.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="css/Dashboard/Dashboard.css" rel="stylesheet"/>
-<style>
-
-            .hidden {
-                display: none !important;
-            }
-
-            .result-container {
-                margin: 0 10px 1.5rem;
-                padding: 16px;
-                border: 1px solid rgba(67, 97, 238, 0.18);
-                border-radius: 12px;
-                background: linear-gradient(135deg, rgba(67, 97, 238, 0.08), rgba(32, 201, 151, 0.08));
-                box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
-                font-family: 'Vazirmatn', sans-serif;
-            }
-
-            .result-header {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-bottom: 12px;
-                color: var(--text-main);
-                font-size: 0.95rem;
-                font-weight: 700;
-            }
-
-                .result-header i {
-                    color: var(--success);
-                }
-
-            #Resultdiv {
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) auto auto;
-                align-items: center;
-                gap: 10px;
-                width: 100%;
-                direction: rtl;
-            }
-
-            #ResultInput {
-                width: 100%;
-                min-width: 0;
-                padding: 12px 14px;
-                border: 1px solid rgba(67, 97, 238, 0.22);
-                border-radius: 10px;
-                font-family: inherit;
-                font-size: 14px;
-                color: #4361ee;
-                font-weight: 600;
-                background: #ffffff;
-                outline: none;
-                transition: all 0.2s ease;
-                box-sizing: border-box;
-                cursor: default;
-                direction: ltr;
-                text-align: left;
-            }
-
-            #Copybtn,
-            #shortenother {
-                padding: 12px 20px;
-                background: linear-gradient(135deg, #4361ee, #7209b7);
-                color: white;
-                border: none;
-                border-radius: 10px;
-                font-family: inherit;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                white-space: nowrap;
-                min-height: 46px;
-            }
-
-            #shortenother {
-                background: #ffffff;
-                color: #4361ee;
-                border: 1px solid rgba(67, 97, 238, 0.24);
-            }
-
-            .result-timer {
-                margin-top: 10px;
-                color: var(--text-muted);
-                font-size: 0.82rem;
-            }
-
-            .analytics-list {
-                display: grid;
-                gap: 1rem;
-            }
-
-            .analytics-link-card {
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) auto;
-                align-items: center;
-                gap: 1rem;
-                padding: 1rem;
-                border: 1px solid rgba(67, 97, 238, 0.14);
-                border-radius: 12px;
-                background: #ffffff;
-                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
-            }
-
-            .analytics-link-main {
-                min-width: 0;
-            }
-
-            .analytics-short {
-                color: #4361ee;
-                font-weight: 700;
-                direction: ltr;
-                text-align: left;
-                overflow-wrap: anywhere;
-            }
-
-            .analytics-original {
-                margin-top: 0.35rem;
-                color: var(--text-muted);
-                font-size: 0.9rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                direction: ltr;
-                text-align: left;
-            }
-
-            .analytics-meta {
-                display: flex;
-                gap: 1rem;
-                margin-top: 0.65rem;
-                color: var(--text-muted);
-                font-size: 0.85rem;
-            }
-
-            .analytics-view-btn {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                min-height: 42px;
-                padding: 10px 16px;
-                border: none;
-                border-radius: 10px;
-                background: linear-gradient(135deg, #4361ee, #7209b7);
-                color: #ffffff;
-                font-family: inherit;
-                font-weight: 700;
-                text-decoration: none;
-                cursor: pointer;
-                white-space: nowrap;
-            }
-
-            .analytics-placeholder {
-                padding: 1rem;
-                border: 1px dashed rgba(67, 97, 238, 0.28);
-                border-radius: 12px;
-                background: rgba(67, 97, 238, 0.05);
-            }
-
-            .analytics-placeholder-title {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-bottom: 0.75rem;
-                color: var(--text-main);
-                font-weight: 800;
-            }
-
-            .analytics-back-btn {
-                margin-top: 1rem;
-                border: 1px solid rgba(67, 97, 238, 0.24);
-                border-radius: 10px;
-                background: #ffffff;
-                color: #4361ee;
-                font-family: inherit;
-                font-weight: 700;
-                padding: 10px 14px;
-                cursor: pointer;
-            }
-
-            .analytics-detail-panel {
-                display: grid;
-                gap: 1rem;
-            }
-
-            .analytics-summary-grid {
-                display: grid;
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 1rem;
-            }
-
-            .analytics-summary-card {
-                padding: 1rem;
-                border: 1px solid rgba(67, 97, 238, 0.12);
-                border-radius: 12px;
-                background: #ffffff;
-                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
-            }
-
-            .analytics-summary-label {
-                color: var(--text-muted);
-                font-size: 0.82rem;
-            }
-
-            .analytics-summary-value {
-                margin-top: 0.45rem;
-                color: var(--text-main);
-                font-size: 1.25rem;
-                font-weight: 800;
-                overflow-wrap: anywhere;
-            }
-
-            .analytics-chart-grid {
-                display: grid;
-                grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
-                gap: 1rem;
-            }
-
-            .analytics-chart-card,
-            .analytics-table-card {
-                padding: 1rem;
-                border: 1px solid rgba(67, 97, 238, 0.12);
-                border-radius: 12px;
-                background: #ffffff;
-                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
-            }
-
-            .analytics-card-title {
-                margin-bottom: 1rem;
-                color: var(--text-main);
-                font-weight: 800;
-            }
-
-            .trade-chart-shell {
-                position: relative;
-                min-height: 320px;
-                padding: 14px;
-                border-radius: 12px;
-                background: #0f172a;
-                border: 1px solid rgba(148, 163, 184, 0.22);
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-            }
-
-                .trade-chart-shell canvas {
-                    width: 100% !important;
-                    height: 290px !important;
-                }
-
-            .city-chart-shell {
-                position: relative;
-                min-height: 320px;
-            }
-
-                .city-chart-shell canvas {
-                    width: 100% !important;
-                    height: 290px !important;
-                }
-
-            .hour-chart {
-                display: grid;
-                grid-template-columns: repeat(24, minmax(18px, 1fr));
-                align-items: end;
-                gap: 6px;
-                min-height: 220px;
-                padding-top: 1rem;
-                border-bottom: 1px solid #e9ecef;
-            }
-
-            .hour-bar-wrap {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-end;
-                min-width: 0;
-                height: 210px;
-            }
-
-            .hour-bar {
-                width: 100%;
-                min-height: 4px;
-                border-radius: 8px 8px 0 0;
-                background: linear-gradient(180deg, #4361ee, #20c997);
-            }
-
-            .hour-count {
-                margin-bottom: 4px;
-                color: var(--text-muted);
-                font-size: 0.72rem;
-            }
-
-            .hour-label {
-                margin-top: 6px;
-                color: var(--text-muted);
-                font-size: 0.7rem;
-                writing-mode: vertical-rl;
-            }
-
-            .city-chart {
-                display: grid;
-                gap: 0.75rem;
-            }
-
-            .city-bar-row {
-                display: grid;
-                grid-template-columns: 90px minmax(0, 1fr) 34px;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .city-name {
-                color: var(--text-main);
-                font-size: 0.85rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-            .city-track {
-                height: 10px;
-                overflow: hidden;
-                border-radius: 99px;
-                background: #edf2ff;
-            }
-
-            .city-bar {
-                height: 100%;
-                border-radius: inherit;
-                background: linear-gradient(135deg, #7209b7, #4361ee);
-            }
-
-            .city-count {
-                color: var(--text-muted);
-                font-size: 0.8rem;
-                text-align: left;
-            }
-
-            .analytics-table-wrap {
-                overflow-x: auto;
-            }
-
-            .analytics-log-table {
-                width: 100%;
-                min-width: 900px;
-                border-collapse: collapse;
-            }
-
-                .analytics-log-table th,
-                .analytics-log-table td {
-                    padding: 0.8rem;
-                    border-bottom: 1px solid #edf2f7;
-                    color: var(--text-main);
-                    font-size: 0.85rem;
-                    text-align: right;
-                    vertical-align: top;
-                }
-
-                .analytics-log-table th {
-                    color: var(--text-muted);
-                    font-weight: 700;
-                    background: #f8f9fa;
-                }
-
-            .ltr-cell {
-                direction: ltr;
-                text-align: left !important;
-                max-width: 240px;
-                overflow-wrap: anywhere;
-            }
-
-            .empty-analytics {
-                padding: 1.25rem;
-                border: 1px dashed rgba(67, 97, 238, 0.24);
-                border-radius: 12px;
-                color: var(--text-muted);
-                background: rgba(67, 97, 238, 0.04);
-            }
-
-            .logout-modal {
-                position: fixed;
-                inset: 0;
-                z-index: 2000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 1rem;
-                background: rgba(15, 23, 42, 0.55);
-                backdrop-filter: blur(4px);
-            }
-
-            .logout-dialog {
-                width: min(420px, 100%);
-                padding: 1.5rem;
-                border-radius: 14px;
-                background: #ffffff;
-                box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
-                text-align: center;
-                font-family: 'Vazirmatn', sans-serif;
-            }
-
-            .logout-dialog-icon {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 52px;
-                height: 52px;
-                margin-bottom: 1rem;
-                border-radius: 50%;
-                background: rgba(239, 68, 68, 0.1);
-                color: #ef4444;
-                font-size: 1.3rem;
-            }
-
-            .logout-dialog-title {
-                margin-bottom: 0.5rem;
-                color: var(--text-main);
-                font-size: 1.1rem;
-                font-weight: 800;
-            }
-
-            .logout-dialog-message {
-                margin-bottom: 1.25rem;
-                color: var(--text-muted);
-                line-height: 1.8;
-            }
-
-            .logout-dialog-actions {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.75rem;
-            }
-
-            .logout-dialog-btn {
-                min-height: 44px;
-                border-radius: 10px;
-                border: none;
-                font-family: inherit;
-                font-weight: 800;
-                cursor: pointer;
-            }
-
-                .logout-dialog-btn.confirm {
-                    background: #ef4444;
-                    color: #ffffff;
-                }
-
-                .logout-dialog-btn.cancel {
-                    background: #f1f5f9;
-                    color: var(--text-main);
-                }
-
-            .qr-dashboard-grid {
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
-                gap: 1rem;
-                align-items: start;
-            }
-
-            .qr-panel {
-                background: #ffffff;
-                border: 1px solid rgba(67, 97, 238, 0.12);
-                border-radius: 12px;
-                padding: 1.25rem;
-                box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
-                margin-bottom: 1rem;
-            }
-
-            .qr-panel-title {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 0.75rem;
-                margin-bottom: 1rem;
-                color: var(--text-main);
-                font-weight: 800;
-            }
-
-                .qr-panel-title span {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-
-            .qr-form-grid {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 1rem;
-            }
-
-            .qr-color-row {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 0.75rem;
-            }
-
-            .qr-color-control {
-                display: grid;
-                grid-template-columns: 44px minmax(0, 1fr);
-                align-items: center;
-                gap: 0.75rem;
-                padding: 0.65rem;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                background: var(--bg-main);
-            }
-
-                .qr-color-control input[type="color"] {
-                    width: 44px;
-                    height: 44px;
-                    padding: 0;
-                    border: none;
-                    border-radius: 8px;
-                    background: transparent;
-                    cursor: pointer;
-                }
-
-            .qr-size-options {
-                display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 0.5rem;
-            }
-
-            .qr-size-option {
-                min-height: 42px;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                background: #ffffff;
-                color: var(--text-main);
-                font-family: inherit;
-                font-weight: 700;
-                cursor: pointer;
-            }
-
-                .qr-size-option.active {
-                    border-color: var(--primary);
-                    color: var(--primary);
-                    background: rgba(67, 97, 238, 0.08);
-                }
-
-            .qr-preview-shell {
-                display: grid;
-                gap: 0.75rem;
-                justify-items: center;
-                padding: 1rem;
-                border: 1px dashed rgba(67, 97, 238, 0.28);
-                border-radius: 12px;
-                background: rgba(67, 97, 238, 0.04);
-            }
-
-            #qrPreviewCanvas {
-                width: min(280px, 100%);
-                aspect-ratio: 1;
-                height: auto;
-                border-radius: 8px;
-                background: #ffffff;
-                box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
-            }
-
-            .qr-help-text {
-                color: var(--text-muted);
-                font-size: 0.82rem;
-            }
-
-            .qr-link-list,
-            .qr-grid {
-                display: grid;
-                gap: 0.75rem;
-            }
-
-            .qr-link-list {
-                max-height: 360px;
-                overflow: auto;
-                padding-left: 0.25rem;
-            }
-
-            .qr-link-option {
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) auto;
-                align-items: center;
-                gap: 0.75rem;
-                padding: 0.85rem;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                background: var(--bg-main);
-            }
-
-                .qr-link-option.active {
-                    border-color: var(--primary);
-                    background: rgba(67, 97, 238, 0.08);
-                }
-
-            .qr-link-short,
-            .qr-link-original,
-            .qr-card-link {
-                direction: ltr;
-                text-align: left;
-                overflow-wrap: anywhere;
-            }
-
-            .qr-link-short {
-                color: var(--primary);
-                font-weight: 800;
-            }
-
-            .qr-link-original {
-                margin-top: 0.25rem;
-                color: var(--text-muted);
-                font-size: 0.82rem;
-            }
-
-            .qr-inline-actions {
-                display: flex;
-                gap: 0.4rem;
-            }
-
-            .qr-action-btn {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 38px;
-                height: 38px;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                background: #ffffff;
-                color: var(--text-muted);
-                cursor: pointer;
-                text-decoration: none;
-            }
-
-                .qr-action-btn:hover {
-                    border-color: var(--primary);
-                    color: var(--primary);
-                }
-
-                .qr-action-btn.delete:hover {
-                    border-color: var(--error);
-                    color: var(--error);
-                }
-
-            .qr-card {
-                display: grid;
-                grid-template-columns: 86px minmax(0, 1fr) auto;
-                gap: 0.8rem;
-                align-items: center;
-                padding: 0.75rem;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                background: var(--bg-main);
-            }
-
-                .qr-card img {
-                    width: 86px;
-                    height: 86px;
-                    object-fit: contain;
-                    border-radius: 8px;
-                    background: #ffffff;
-                }
-
-            .qr-status {
-                margin-bottom: 1rem;
-                padding: 0.85rem 1rem;
-                border-radius: 10px;
-                font-weight: 700;
-            }
-
-                .qr-status.success {
-                    color: #166534;
-                    background: #dcfce7;
-                }
-
-                .qr-status.error {
-                    color: #991b1b;
-                    background: #fee2e2;
-                }
-
-            @media (max-width: 768px) {
-                #Resultdiv {
-                    grid-template-columns: 1fr;
-                }
-
-                #Copybtn,
-                #shortenother {
-                    justify-content: center;
-                    width: 100%;
-                }
-
-                .analytics-link-card {
-                    grid-template-columns: 1fr;
-                }
-
-                .analytics-view-btn {
-                    width: 100%;
-                }
-
-                .analytics-summary-grid,
-                .analytics-chart-grid,
-                .qr-dashboard-grid,
-                .qr-form-grid {
-                    grid-template-columns: 1fr;
-                }
-
-                .analytics-meta,
-                .qr-inline-actions {
-                    flex-wrap: wrap;
-                }
-
-                .analytics-summary-card,
-                .analytics-chart-card,
-                .analytics-table-card,
-                .qr-panel {
-                    padding: 0.9rem;
-                }
-
-                .qr-card {
-                    grid-template-columns: 72px minmax(0, 1fr);
-                    align-items: start;
-                }
-
-                    .qr-card img {
-                        width: 72px;
-                        height: 72px;
-                    }
-
-                    .qr-card .qr-inline-actions {
-                        grid-column: 1 / -1;
-                        justify-content: stretch;
-                    }
-
-                        .qr-card .qr-inline-actions .qr-action-btn,
-                        .qr-card .qr-inline-actions form {
-                            flex: 1;
-                        }
-
-                        .qr-card .qr-inline-actions .qr-action-btn {
-                            width: 100%;
-                        }
-
-                .qr-color-row,
-                .qr-size-options {
-                    grid-template-columns: 1fr;
-                }
-
-                .hour-chart {
-                    overflow-x: auto;
-                    grid-template-columns: repeat(24, 28px);
-                    padding-bottom: 0.5rem;
-                }
-            }
-
-            @media (max-width: 420px) {
-                .qr-link-option {
-                    grid-template-columns: 1fr;
-                }
-
-                    .qr-link-option .qr-inline-actions {
-                        justify-content: stretch;
-                    }
-
-                    .qr-link-option .qr-action-btn {
-                        flex: 1;
-                        width: 100%;
-                    }
-
-                .logout-dialog-actions {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-    </style>
-<link href="css/theme.css" rel="stylesheet"/>
-<link href="css/english.css" rel="stylesheet"/>
-<style>.portfolio-demo-banner{position:relative;z-index:10001;padding:9px 16px;text-align:center;background:#152244;color:#fff;font:600 12px/1.5 Arial,sans-serif}.portfolio-demo-banner+header{top:36px}@media(max-width:600px){.portfolio-demo-banner{font-size:11px}}body{direction:ltr}</style></head>
-<body><div class="portfolio-demo-banner">Portfolio preview · Sample data · Dashboard navigation is interactive. Account and server actions are disabled.</div>
-<!-- Header -->
-<header class="dashboard-header">
-<a href="#dashboard" style="text-decoration:none;">
-<div class="logo">
-<img alt="Alternate Text" class="icon icon-md" src="Images/Logo/logo.png"/>
-<span class="logo-text">Payvand</span>
-</div>
-</a>
-<div class="user-profile">
-<img alt="Payvand Logo" class="icon icon-md" src="Images/Icons/ProfileIcon.png"/>
-<div class="user-info">
-<div class="user-name">
-Portfolio guest                </div>
-<div class="user-phone"></div>
-</div>
-</div>
-</header>
-<!-- Sidebar (Desktop) -->
-<aside class="dashboard-sidebar">
-<nav>
-<ul class="nav-menu">
-<li class="nav-item">
-<a class="nav-link active" data-page="dashboard" href="#dashboard">
-<i class="fas fa-home nav-icon"></i>
-<span>Dashboard</span>
+                            Journal
+
+                        </a>
+</li>
+<li b-pand1dq8lx="">
+<a class="nav-link qr-header-button" href="dashboard.html#create" value="qrcode">
+<img alt="QR Code Icon" b-pand1dq8lx="" class="icon icon-sm qr-header-icon" src="Images/Icons/QrCode.png"/>
+<span b-pand1dq8lx="" class="qr-header-label">QrCode</span>
 </a>
 </li>
-<li class="nav-item">
-<a class="nav-link" data-page="links" href="#links">
-<i class="fas fa-link nav-icon"></i>
-<span>My links</span>
-</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" data-page="create" href="#create">
-<i class="fas fa-plus-circle nav-icon"></i>
-<span>Create QR code</span>
-</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" data-page="analytics" href="#analytics">
-<i class="fas fa-chart-line nav-icon"></i>
-<span>Analytics</span>
-</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" data-page="profile" href="#profile">
-<i class="fas fa-user nav-icon"></i>
-<span>Profile</span>
-</a>
-</li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" class="nav-link" data-section="features" href="javascript:void(0)"> <img alt="Features Icon" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Featurse.png"/> Features</a></li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" class="nav-link" data-section="faq" href="javascript:void(0)"> <img alt="Guide Icon" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Guide.png"/> Help</a></li>
 </ul>
-</nav>
-</aside>
-<!-- Main Content -->
-<main class="dashboard-main">
-<!-- Dashboard Page -->
-<section class="page-section active" id="dashboard">
-<!-- Stats Cards -->
-<div class="stats-grid">
-<div class="stat-card">
-<div class="stat-icon link">
-<i class="fas fa-link"></i>
-</div>
-<div class="stat-content">
-<div class="stat-number">12</div>
-<div class="stat-label">Total links</div>
-</div>
-</div>
-<div class="stat-card">
-<div class="stat-icon click">
-<i class="fas fa-mouse-pointer"></i>
-</div>
-<div class="stat-content">
-<div class="stat-number">148</div>
-<div class="stat-label">Clicks today</div>
-</div>
-</div>
-<div class="stat-card">
-<div class="stat-icon active">
-<i class="fas fa-chart-bar"></i>
-</div>
-<div class="stat-content">
-<div class="stat-number">2,460</div>
-<div class="stat-label">Total clicks</div>
-</div>
-</div>
-</div>
-<!-- Recent Links -->
-<div class="recent-links">
-<div class="section-header">
-<h2 class="section-title">
-<i class="fas fa-history"></i>
-                        Your recent links
-                    </h2>
-<a class="view-all" data-page="links" href="#links">
-                        View all
+<div b-pand1dq8lx="" class="nav-actions">
+<button aria-label="Enable dark mode" aria-pressed="false" b-pand1dq8lx="" class="theme-toggle" data-theme-toggle="" type="button">
+<span aria-hidden="true" b-pand1dq8lx="" class="theme-toggle-icons">
+<svg b-pand1dq8lx="" class="theme-icon-moon" viewbox="0 0 24 24"><path b-pand1dq8lx="" d="M20.5 15.6A9 9 0 0 1 8.4 3.5 9 9 0 1 0 20.5 15.6Z"></path></svg>
+<svg b-pand1dq8lx="" class="theme-icon-sun" viewbox="0 0 24 24"><circle b-pand1dq8lx="" cx="12" cy="12" r="4"></circle><path b-pand1dq8lx="" d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>
+</span>
+<span b-pand1dq8lx="" class="theme-toggle-label">Dark</span>
+</button>
+<a class="nav-link" href="dashboard.html">
+<img alt="Dashboard Icon" b-pand1dq8lx="" class="icon icon-profile" src="Images/Icons/ProfileIcon.png"/>
+                        Dashboard
                     </a>
 </div>
-<div class="links-list" id="recentLinksList">
-<div class="link-item"><div class="link-header"><div class="link-short">pvnd.demo/launch</div><div class="link-actions"><a class="action-btn analytics-link" href="#analytics" title="View analytics"><i class="fas fa-chart-line"></i></a></div></div><div class="link-details"><div class="link-original">https://example.com/product-launch</div><div class="link-stats"><i class="fas fa-mouse-pointer"></i> 842 clicks</div></div></div><div class="link-item"><div class="link-header"><div class="link-short">pvnd.demo/guide</div><div class="link-actions"><a class="action-btn analytics-link" href="#analytics" title="View analytics"><i class="fas fa-chart-line"></i></a></div></div><div class="link-details"><div class="link-original">https://example.com/brand-guide</div><div class="link-stats"><i class="fas fa-mouse-pointer"></i> 515 clicks</div></div></div><div class="link-item"><div class="link-header"><div class="link-short">pvnd.demo/event</div><div class="link-actions"><a class="action-btn analytics-link" href="#analytics" title="View analytics"><i class="fas fa-chart-line"></i></a></div></div><div class="link-details"><div class="link-original">https://example.com/autumn-event</div><div class="link-stats"><i class="fas fa-mouse-pointer"></i> 361 clicks</div></div></div></div>
-</div>
-</section>
-<!-- My Links Page -->
-<section class="page-section" id="links">
-<div class="section-header">
-<h2 class="section-title">
-<i class="fas fa-link"></i>
-                    Create a new link
-                </h2>
-</div>
-<form data-demo-form="true" data-pv-disable-submit="true" data-pv-error="Enter a valid URL." data-pv-validate="true" id="dashboardCreateLinkForm">
-<div style="display: flex; align-items: center; gap: 8px; width: 100%; direction: rtl; font-family: 'Vazirmatn', sans-serif;">
-<div style="position: relative; flex: 1; padding:10px;">
-<input data-val="true" data-val-required="The ShortenedLink field is required." id="ShortenedLink" name="ShortenedLink" type="hidden" value=""/>
-<input data-pv-required="true" data-pv-url="true" data-val="true" data-val-required="The OriginalUrl field is required." id="OriginalUrl" name="OriginalUrl" onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'" onfocus="this.style.borderColor='#4361ee'; this.style.boxShadow='0 0 0 4px rgba(67, 97, 238, 0.1)'" onmouseenter="this.style.borderColor='#adb5bd'" onmouseleave="this.style.borderColor='#e9ecef'" placeholder="Enter your URL..." style="width: 100%; padding: 12px 40px 12px 16px; border: 2px solid #e9ecef; border-radius: 12px; font-family: inherit; font-size: 14px; color: #212529; background: #ffffff; outline: none; transition: all 0.2s ease; box-sizing: border-box;" type="text" value=""/>
-</div>
-<button disabled="disabled" onmousedown="this.style.transform='translateY(0)'" onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'" style="padding: 12px 20px; background: linear-gradient(135deg, #4361ee, #7209b7); color: white; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; white-space: nowrap;" title="Available in the full application" type="submit">
-<i class="fas fa-scissors" style="font-size: 14px;"></i>
-                        Shorten link
-                    </button>
-</div>
-</form>
-<div class="result-container hidden" id="linkResult">
-<div class="result-header">
-<i class="fas fa-check-circle"></i>
-<span>Short link created successfully</span>
-</div>
-<div id="Resultdiv">
-<input id="ResultInput" onmouseenter="this.style.borderColor='#adb5bd'" onmouseleave="this.style.borderColor='#e9ecef'" readonly="" type="text" value=""/>
-<button id="Copybtn" onmousedown="this.style.transform='translateY(0)'" onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'" type="button">
-<img alt="Copy Icon" class="icon icon-sm" src="Images/Icons/CopyW.png"/>
-                        Copy
-                    </button>
-<button id="shortenother" onmousedown="this.style.transform='translateY(0)'" onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(67, 97, 238, 0.3)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'" type="button">
-<img alt="Plus Icon" class="icon icon-sm" src="Images/Icons/Plus.png"/>
-                        Shorten another link
-                    </button>
-</div>
-</div>
-
-<div class="section-header">
-<h2 class="section-title">
-<i class="fas fa-link"></i>
-                    My links
-                </h2>
-<input class="form-input" id="searchLinks" placeholder="Search links..." style="max-width: 300px;" type="text"/>
-</div>
-<div class="links-grid" id="allLinksList">
-<div class="link-card"><div class="link-short">launch</div><div class="link-original">https://example.com/product-launch</div><div class="link-stats"><i class="fas fa-mouse-pointer"></i> 842 clicks</div></div><div class="link-card"><div class="link-short">guide</div><div class="link-original">https://example.com/brand-guide</div><div class="link-stats"><i class="fas fa-mouse-pointer"></i> 515 clicks</div></div><div class="link-card"><div class="link-short">event</div><div class="link-original">https://example.com/autumn-event</div><div class="link-stats"><i class="fas fa-mouse-pointer"></i> 361 clicks</div></div></div>
-
-</section>
-<section class="page-section" id="create">
-<div class="section-header">
-<h2 class="section-title">
-<i class="fas fa-qrcode"></i>
-                    Create QR Code
-                </h2>
-</div>
-<div class="qr-dashboard-grid">
-<div>
-<form class="qr-panel" data-demo-form="true" data-pv-error="Choose or enter a valid URL for your QR code." data-pv-qr="true" data-pv-validate="true" enctype="multipart/form-data" id="qrForm">
-<div class="qr-panel-title">
-<span><i class="fas fa-wand-magic-sparkles"></i> QR code settings</span>
-<button class="qr-action-btn" id="clearQrForm" title="New form" type="button">
-<i class="fas fa-plus"></i>
+<button b-pand1dq8lx="" class="menu-toggle">
+<i b-pand1dq8lx="" class="fas fa-bars"></i>
 </button>
-</div>
-<input data-val="true" data-val-required="The Id field is required." id="qrId" name="Qrcdoe.Id" type="hidden" value="0"/>
-<input data-val="true" data-val-required="The Size field is required." id="qrSizeInput" name="Qrcdoe.Size" type="hidden" value="300"/>
-<div class="form-group">
-<label class="form-label" for="Qrcdoe_ShortenedLinkId">Choose a short link</label>
-<select class="form-input" id="qrShortenedLinkSelect" name="Qrcdoe.ShortenedLinkId">
-<option value="">Enter a different URL</option>
-</select>
-</div>
-<div class="form-group">
-<label class="form-label" for="Qrcdoe_Link">Or use a direct URL</label>
-<input class="form-input" data-pv-url="true" dir="ltr" id="qrLinkInput" name="Qrcdoe.Link" placeholder="https://example.com/page" type="text" value=""/>
-</div>
-<div class="qr-form-grid">
-<div class="form-group">
-<label class="form-label">Colors</label>
-<div class="qr-color-row">
-<label class="qr-color-control">
-<input data-val="true" data-val-required="The ForeGroundColor field is required." id="qrForegroundColor" name="Qrcdoe.ForeGroundColor" type="color" value="#000000"/>
-<span>Foreground color</span>
-</label>
-<label class="qr-color-control">
-<input data-val="true" data-val-required="The BackGroundColor field is required." id="qrBackgroundColor" name="Qrcdoe.BackGroundColor" type="color" value="#FFFFFF"/>
-<span>Background</span>
-</label>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Output size</label>
-<div class="qr-size-options">
-<button class="qr-size-option" data-size="220" type="button">Small</button>
-<button class="qr-size-option active" data-size="300" type="button">Medium</button>
-<button class="qr-size-option" data-size="500" type="button">Large</button>
-</div>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label" for="Qrcdoe_Logo">Optional logo</label>
-<input accept="image/png,image/jpeg,image/webp" class="form-input" id="qrLogoInput" name="Qrcdoe.Logo" type="file"/>
-<div class="qr-help-text">The logo applies to the preview and new output only.</div>
-</div>
-<div class="qr-preview-shell">
-<canvas height="300" id="qrPreviewCanvas" width="300"></canvas>
-<div class="qr-help-text" id="qrPreviewText">Live QR code preview</div>
-</div>
-<button class="save-btn" disabled="disabled" style="width:100%; margin-top:1rem;" title="Available in the full application" type="submit">
-<i class="fas fa-save"></i>
-                            Save QR code
-                        </button>
-</form>
+</nav>
+</header>
+<div b-pand1dq8lx="" class="container">
+<main b-pand1dq8lx="" class="pb-3" role="main">
+<link href="css/Home/site.css?v=-wdfD6kCHuCfxP-0UimwwGs7F8Zll-hLJoPfCvYMz2c" rel="stylesheet"/>
+<link href="css/Home/LoginReq.css?v=S0dyQKAzk6q6iHymETu26jClKwbW05L2HJiqcWZb6ls" rel="stylesheet"/>
+<!-- قهرمان سایت -->
+<section class="hero">
+<div class="hero-content">
+<h1 class="hero-title">
 
+                Make every <span class="highlight">long link</span>
+<span class="highlight">short and shareable</span>
+</h1>
+<!-- فرم short‌سازی -->
+<form data-demo-shortener="true" data-pv-error="Enter a valid URL." data-pv-validate="true" id="shortenerForm">
+<div class="shortener-form">
+<div class="input-group">
+<input class="input-validation-error" data-val="true" data-val-required="The ShortenedLink field is required." id="ShortenedLink" name="ShortenedLink" type="hidden" value=""/>
+<div class="url-input-wrapper">
+<input class="url-input input-validation-error" data-pv-required="true" data-pv-url="true" data-val="true" data-val-required="The OriginalUrl field is required." id="url-input" name="OriginalUrl" placeholder="Paste your long URL here" type="text" value=""/>
 </div>
-<div>
-<div class="qr-panel">
-<div class="qr-panel-title">
-<span><i class="fas fa-link"></i> Short links</span>
-<span class="qr-help-text">0 link</span>
-</div>
-<input class="form-input" id="qrLinkSearch" placeholder="Search links..." style="margin-bottom:0.75rem;" type="text"/>
-<div class="qr-link-list" id="qrLinkList">
-</div>
-</div>
-<div class="qr-panel">
-<div class="qr-panel-title">
-<span><i class="fas fa-history"></i> Created QR codes</span>
-<span class="qr-help-text">0 items</span>
-</div>
-<div class="qr-grid">
-<div class="empty-analytics">You have not created a QR code yet.</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Analytics Page -->
-<section class="page-section" id="analytics">
-<div id="analyticsListView">
-<div class="section-header">
-<h2 class="section-title">
-<i class="fas fa-chart-line"></i>
-                        Link analytics
-                    </h2>
-</div>
-<div class="analytics-list">
-<div class="analytics-link-card"><div class="analytics-link-main"><div class="analytics-short">pvnd.demo/launch</div><div class="analytics-original">https://example.com/product-launch</div><div class="analytics-meta"><span><i class="fas fa-mouse-pointer"></i> 842 clicks</span><span><i class="fas fa-calendar-alt"></i> Sample data</span></div></div></div><div class="analytics-link-card"><div class="analytics-link-main"><div class="analytics-short">pvnd.demo/guide</div><div class="analytics-original">https://example.com/brand-guide</div><div class="analytics-meta"><span><i class="fas fa-mouse-pointer"></i> 515 clicks</span><span><i class="fas fa-calendar-alt"></i> Sample data</span></div></div></div><div class="analytics-link-card"><div class="analytics-link-main"><div class="analytics-short">pvnd.demo/event</div><div class="analytics-original">https://example.com/autumn-event</div><div class="analytics-meta"><span><i class="fas fa-mouse-pointer"></i> 361 clicks</span><span><i class="fas fa-calendar-alt"></i> Sample data</span></div></div></div></div>
-</div>
-<div class="hidden" id="analyticsDetailView">
-<div class="section-header">
-<h2 class="section-title">
-<i class="fas fa-chart-bar"></i>
-                        Link analytics
-                    </h2>
-</div>
-<div style="margin-bottom: 1rem;">
-<button class="analytics-back-btn" id="analyticsBackToList" type="button">
-                        Back to links
+<button class="shorten-btn" id="shorten-btn" type="submit">
+<img alt="Cut Icon" class="icon icon-md" src="Images/Icons/Cut.png"/>
+
+                        Shorten link
+
                     </button>
 </div>
-<div id="analyticsDetails">
+<div class="policy-hint">
+
+                    Free to start | No account required
+
+                </div>
+</div>
+</form>
+<!-- نتیجه short‌سازی (hidden template, JS پر می‌کند) -->
+<div class="result-container hidden" id="resultContainer">
+<div class="short-link">
+<input class="short-url-input" id="shortLinkInput" readonly="" type="text" value=""/>
+<button class="copy-btn" id="copyBtn">Copy</button>
+</div>
+<div class="result-actions">
+<button class="btn-action" id="newShortenBtn">Shorten another link</button>
+<form class="inline-action-form" data-demo-form="true">
+<input id="qrCodeLinkId" name="shortLinkId" type="hidden" value=""/>
+<button class="btn-action" disabled="disabled" title="Available in the full application" type="submit">Download QR code</button>
+</form>
+<a class="btn-action" href="" id="analyticsLink">View link analytics</a>
+</div>
+</div>
+<!-- Login Required Prompt (hidden template, JS نمایش می‌دهد) -->
+<div class="login-prompt-card hidden" id="loginPromptContainer">
+<div class="card-content">
+<img alt="Payvand Logo" class="icon icon-Logo" src="Images/Logo/logo.png"/>
+<h3 class="card-title">You reached your monthly link limit</h3>
+<p class="card-message">
+
+                        Open your dashboard to manage your links and QR codes.
+                    </p>
+<div class="button-group">
+<a class="btn btn-primary" href="dashboard.html" style="text-decoration:none; color:white;">
+<i class="fas fa-chart-line"></i>
+                            Open Dashboard
+                        </a>
+</div>
+</div>
+</div>
+<!-- alert برای Message خطا -->
+<div class="custom-alert" id="customAlert" style="display:none;"></div>
+</div>
+<!-- Analytics زنده -->
+<div class="live-stats">
+<div class="stat-card">
+<div class="stat-icon">
+<img alt="User Icon" class="icon icon-md" src="Images/Icons/User.png"/>
+</div>
+<div class="stat-info">
+<div class="stat-number" id="user-count">143</div>
+<div class="stat-label">Active users</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<img alt="Done Icon" class="icon icon-md" src="Images/Icons/Done.png"/>
+</div>
+<div class="stat-info">
+<div class="stat-number" id="link-count">124</div>
+<div class="stat-label">Links shortened</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<img alt="Click Icon" class="icon icon-md" src="Images/Icons/Click.png"/>
+</div>
+<div class="stat-info">
+<div class="stat-number" id="click-count">256</div>
+<div class="stat-label">Clicks</div>
+</div>
 </div>
 </div>
 </section>
-<!-- Profile Page -->
-<section class="page-section" id="profile">
-<div class="profile-container">
-<div class="profile-card">
-<div class="profile-info">
-<img alt="Payvand Logo" class="icon icon-Logo" src="Images/Icons/ProfileIcon.png"/>
-<div>
-<h3 style="margin-bottom: 0.5rem; color: var(--text-main);">
-Portfolio guest
-                            </h3>
-<p style="color: var(--text-muted);">Member since October 2, 2026</p>
+<!-- Features -->
+<section class="features">
+<h2 class="section-title">Why Payvand?</h2>
+<p class="section-subtitle">Everything you need to manage and share your links</p>
+<div class="features-grid">
+<div class="feature-card">
+<div class="feature-icon">
+<img alt="Fast Icon" class="icon icon-md" src="Images/Icons/Fast.png"/>
+</div>
+<h3 class="feature-title">Fast and reliable</h3>
+<p class="feature-description">
+
+                    Create short links in seconds and share them anywhere.
+
+                </p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">
+<img alt="Secure Icon" class="icon icon-md" src="Images/Icons/Secure.png"/>
+</div>
+<h3 class="feature-title">Safe and private</h3>
+<p class="feature-description">
+
+                    Manage your links with privacy and security in mind.
+
+                </p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">
+<img alt="Statistics Icon" class="icon icon-md" src="Images/Icons/statistics.png"/>
+</div>
+<h3 class="feature-title">Detailed analytics</h3>
+<p class="feature-description">
+
+                    Understand clicks, locations, devices, and trends.
+
+                </p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">
+<img alt="QrCode Icon" class="icon icon-md" src="Images/Icons/QrCodeW.png"/>
+</div>
+<h3 class="feature-title">Free QR codes</h3>
+<p class="feature-description">
+
+                    Create a QR code for any short link.
+
+                </p>
 </div>
 </div>
-<form data-demo-form="true" data-pv-disable-submit="true" data-pv-error="Enter a valid username." data-pv-validate="true" id="changeUserNameForm">
-<input data-val="true" data-val-required="The UserId field is required." id="UserId" name="UserId" type="hidden" value=""/>
-<label class="form-label" for="DisplayName">Username</label>
-<input class="form-input" data-pv-required="true" data-pv-unique-url="/Dashboard/CheckDisplayName" data-pv-username="true" id="DisplayName" name="DisplayName" placeholder="User_123" type="text" value="Portfolio guest"/>
-<span class="pv-field-error"></span>
-<button class="save-btn-usname" disabled="disabled" title="Available in the full application" type="submit">
-<i class="fas fa-save"></i>
-                            Save changes
-                        </button>
-</form>
-<label class="form-label">Google account email</label>
-<input class="form-input" dir="ltr" readonly="" type="email"/>
+</section>
+<section id="features">
+<div class="features-container">
+<div class="section-header">
+<h2 class="section-title">Tools to help your links go further</h2>
+<p class="section-subtitle">Create, share, and measure links in one place.</p>
+</div>
+<div class="accordion">
+<div class="accordion-item active">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="Link Icon" class="icon icon-sm" src="Images/Icons/Link.png"/>
+</span>
+<span class="accordion-title">Link shortening</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Turn a long URL into a clean, shareable link in seconds.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<i class="fas fa-chart-line"> <img alt="Chart Icon" class="icon icon-sm" src="Images/Icons/Chart.png"/></i>
+</span>
+<span class="accordion-title">Click analytics</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>See when and where people open your links so you can learn what works.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<i class="fas fa-pen"> <img alt="Pencil Icon" class="icon icon-sm" src="Images/Icons/Pencil.png"/></i>
+</span>
+<span class="accordion-title">Custom links</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Choose memorable names for links you share with your audience.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<i class="fas fa-qrcode"> <img alt="QrCode Icon" class="icon icon-sm" src="Images/Icons/QrCode.png"/></i>
+</span>
+<span class="accordion-title">QR code creation</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Create a QR code for your short link and use it online or in print.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<i class="fas fa-shield-alt"> <img alt="Shield Icon" class="icon icon-sm" src="Images/Icons/Shield.png"/></i>
+</span>
+<span class="accordion-title">Secure and dependable</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Share links with confidence and keep track of their activity.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- نحوه کار -->
+<section class="how-it-works">
+<h2 class="section-title">How it works</h2>
+<div class="steps">
+<div class="step">
+<div class="step-number">1</div>
+<div class="step-content">
+<h3>Paste your link</h3>
+<p>Enter your original URL in the box above.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-number">2</div>
+<div class="step-content">
+<h3>Click Shorten link</h3>
+<p>Payvand creates a short link for you.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-number">3</div>
+<div class="step-content">
+<h3>Copy and share</h3>
+<p>Use your new link anywhere you need it.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="faq">
+<div class="faq-container">
+<div class="section-header">
+<h2 class="section-title">Frequently asked questions</h2>
+<p class="section-subtitle">Answers to common questions about Payvand.</p>
+</div>
+<div class="accordion">
+<div class="accordion-item active">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="QuestionMark Icon" class="icon icon-sm" src="Images/Icons/QuestionMark.png"/>
+</span>
+<span class="accordion-title">What is Payvand?</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Payvand turns a long URL into a short link. People who open it are redirected to the original address.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="DollarSigne Icon" class="icon icon-sm" src="Images/Icons/DollarSigne.png"/>
+</span>
+<span class="accordion-title">Is Payvand free?</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>The basic link shortener is free. Check your account for available limits and features.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="UserSequred Icon" class="icon icon-sm" src="Images/Icons/UserSequred.png"/>
+</span>
+<span class="accordion-title">Are my links safe?</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Payvand uses HTTPS and checks links for harmful destinations. Report suspicious links using the form below.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="Link Icon" class="icon icon-sm" src="Images/Icons/Link.png"/>
+</span>
+<span class="accordion-title">Do short links expire?</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Links remain active until you remove them, subject to your account settings.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="Chart Icon" class="icon icon-sm" src="Images/Icons/Chart.png"/>
+</span>
+<span class="accordion-title">Which analytics are available?</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>View click counts and available information about visitors, devices, and traffic sources.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<button class="accordion-header">
+<span class="accordion-icon">
+<img alt="Support Icon" class="icon icon-sm" src="Images/Icons/Support.png"/>
+</span>
+<span class="accordion-title">How can I contact support?</span>
+<span class="accordion-arrow">
+<img alt="DownArrow Icon" class="icon icon-sm" src="Images/Icons/ArrowDown.png"/>
+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-body">
+<p>Use the contact form or email payvandweb@gmail.com and the team will get back to you.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 </main>
-<!-- Bottom Navigation (Mobile) -->
-<nav class="bottom-nav">
-<a class="bottom-nav-item active" data-page="dashboard" href="#dashboard">
-<i class="fas fa-home bottom-nav-icon"></i>
-<span class="bottom-nav-text">Home</span>
-</a>
-<a class="bottom-nav-item" data-page="links" href="#links">
-<i class="fas fa-link bottom-nav-icon"></i>
-<span class="bottom-nav-text">Links</span>
-</a>
-<a class="bottom-nav-item" data-page="create" href="#create">
-<div class="create-link-btn">
-<i class="fas fa-plus"></i>
 </div>
-<span class="bottom-nav-text create-text">Create</span>
-</a>
-<a class="bottom-nav-item" data-page="analytics" href="#analytics">
-<i class="fas fa-chart-line bottom-nav-icon"></i>
-<span class="bottom-nav-text">Analytics</span>
-</a>
-<a class="bottom-nav-item" data-page="profile" href="#profile">
-<i class="fas fa-user bottom-nav-icon"></i>
-<span class="bottom-nav-text">Profile</span>
-</a>
-</nav>
-<div aria-labelledby="logoutModalTitle" aria-modal="true" class="logout-modal hidden" id="logoutModal" role="dialog">
-<div class="logout-dialog">
-<div class="logout-dialog-icon">
-<i class="fas fa-sign-out-alt"></i>
-</div>
-<div class="logout-dialog-title" id="logoutModalTitle">Sign out</div>
-<div class="logout-dialog-message">Sign out of the dashboard?</div>
-<div class="logout-dialog-actions">
-<button class="logout-dialog-btn confirm" id="confirmLogout" type="button">Yes</button>
-<button class="logout-dialog-btn cancel" id="cancelLogout" type="button">No</button>
-</div>
-</div>
-</div>
-<form data-demo-form="true" hidden="" id="logoutForm"></form>
-<!-- Overlay wrapper -->
-<!-- Global Toast -->
-<div class="toast" id="toast">
-<i class="fas fa-check-circle toast-icon"></i>
-<span id="toastMessage"></span>
-<button id="closeToast">×</button>
-</div>
+<!-- فوتر -->
+<div b-pand1dq8lx="" class="footer">
+<div b-pand1dq8lx="" class="footer-content">
+<div b-pand1dq8lx="" class="footer-section">
+<a b-pand1dq8lx="" class="footer-logo" href="index.html" style="text-decoration:none;color:inherit;">
+<img alt="" b-pand1dq8lx="" class="icon icon-Logo" src="Images/Logo/logo.png"/>
 
+                        Payvand
 
+                    </a>
+<p b-pand1dq8lx="" class="footer-description">
 
+                        Simple tools for smarter links.
+
+                    </p>
+<div b-pand1dq8lx="" class="social-links">
+<a b-pand1dq8lx="" class="social-link" href="https://payvnd.ir/pH4ZtQ" target="_blank"> <img alt="Telegram Icon" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Telegram.png"/></a>
+<a b-pand1dq8lx="" class="social-link" href="https://payvnd.ir/3JnvSZ" target="_blank"> <img alt="Instagram Icon" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Instagram.png"/></a>
+</div>
+</div>
+<div b-pand1dq8lx="" class="footer-section">
+<h4 b-pand1dq8lx="">Quick links</h4>
+<ul b-pand1dq8lx="" class="footer-links">
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" href="index.html"><img alt="" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/>Home</a></li>
+<li b-pand1dq8lx=""><a href="journal.html"><img alt="" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/>Payvand Journal</a></li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" data-section="features" href="#"><img alt="Left Arrow" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/> Features</a></li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" data-section="faq" href="#"><img alt="Left Arrow" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/>Help</a></li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" href="#" id="ContactBtn"><img alt="Left Arrow" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/>Contact</a></li>
+</ul>
+</div>
+<div b-pand1dq8lx="" class="footer-section">
+<h4 b-pand1dq8lx="">Legal</h4>
+<ul b-pand1dq8lx="" class="footer-links">
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" href="privacy.html"><img alt="Left Arrow" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/> Privacy</a></li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" href="terms.html"><img alt="Left Arrow" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/>  Terms of use</a></li>
+<li b-pand1dq8lx=""><a b-pand1dq8lx="" href="#" id="ViolationReportBtn"><img alt="Left Arrow" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/LeftArrow.png"/>  Report abuse</a></li>
+</ul>
+</div>
+<div b-pand1dq8lx="" class="footer-section">
+<h4 b-pand1dq8lx="">Contact us</h4>
+<ul b-pand1dq8lx="" class="footer-contact">
+<li b-pand1dq8lx=""><img alt="Email Icon" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Email.png"/>payvandweb@gmail.com</li>
+<li b-pand1dq8lx=""><img alt="Location Icon" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Location.png"/>Karaj, Iran</li>
+</ul>
+</div>
+</div>
+<div b-pand1dq8lx="" class="footer-bottom">
+<p b-pand1dq8lx="">© 2026 Payvand. All rights reserved.</p>
+<p b-pand1dq8lx="">Made with care.</p>
+</div>
+</div>
+<!-- Contact Modal -->
+<div b-pand1dq8lx="" class="modal-overlay" id="contactModal">
+<div b-pand1dq8lx="" class="modal-container">
+<div b-pand1dq8lx="" class="modal-header">
+<button b-pand1dq8lx="" class="close-button" id="closeModal">×</button>
+<h2 b-pand1dq8lx="" class="modal-title">Contact us</h2>
+</div>
+<div b-pand1dq8lx="" class="modal-body">
+<form data-demo-form="true" data-pv-disable-submit="true" data-pv-error="Complete the contact form correctly." data-pv-validate="true" id="contactForm">
+<input id="Messagemodel_UserId" name="Messagemodel.UserId" type="hidden" value="1086"/>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="Messagemodel_FullName">Full name</label>
+<input class="form-control input-validation-error" data-pv-min="2" data-pv-required="true" data-val="true" data-val-length="The field FullName must be a string with a maximum length of 100." data-val-length-max="100" data-val-required="Enter your full name." id="name" maxlength="100" name="Messagemodel.FullName" placeholder="Enter your name" type="text" value=""/>
+<span class="field-validation-error" data-valmsg-for="Messagemodel.FullName" data-valmsg-replace="true">Enter your full name.</span>
+</div>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="Messagemodel_Email">Email</label>
+<input class="form-control input-validation-error" data-pv-email="true" data-pv-required="true" data-val="true" data-val-email="Enter a valid email address." data-val-length="The field Email must be a string with a maximum length of 254." data-val-length-max="254" data-val-required="Enter your email." id="email" maxlength="254" name="Messagemodel.Email" placeholder="Enter a valid email address" type="email" value=""/>
+<span class="field-validation-error" data-valmsg-for="Messagemodel.Email" data-valmsg-replace="true">Enter your email.</span>
+</div>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="Messagemodel_Topic">Subject</label>
+<input class="form-control input-validation-error" data-pv-min="3" data-pv-required="true" data-val="true" data-val-length="The field Topic must be a string with a maximum length of 150." data-val-length-max="150" data-val-required="Enter a subject." id="subject" maxlength="150" name="Messagemodel.Topic" placeholder="Enter a subject" type="text" value=""/>
+<span class="field-validation-error" data-valmsg-for="Messagemodel.Topic" data-valmsg-replace="true">Enter a subject.</span>
+</div>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="Messagemodel_Message">Message</label>
+<textarea class="form-control input-validation-error" data-pv-min="10" data-pv-required="true" data-val="true" data-val-length="The field Message must be a string with a maximum length of 4000." data-val-length-max="4000" data-val-required="Enter your message." id="message" maxlength="4000" name="Messagemodel.Message" placeholder="Write your message...">
+
+</textarea>
+<span class="field-validation-error" data-valmsg-for="Messagemodel.Message" data-valmsg-replace="true">Enter your message.</span>
+</div>
+<button b-pand1dq8lx="" class="submit-button" disabled="disabled" title="Available in the full application" type="submit">Send message</button>
+</form>
+<div b-pand1dq8lx="" class="contact-info">
+<div b-pand1dq8lx="" class="info-item"><img alt="" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Email.png"/><span b-pand1dq8lx="">Email: payvandweb@gmail.com</span></div>
+<div b-pand1dq8lx="" class="info-item"><img alt="" b-pand1dq8lx="" class="icon icon-sm" src="Images/Icons/Location.png"/><span b-pand1dq8lx="">Location: Karaj, Iran</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Violation Report Modal -->
+<div b-pand1dq8lx="" class="modal-overlay" id="violationReportModal">
+<div b-pand1dq8lx="" class="modal-container">
+<div b-pand1dq8lx="" class="modal-header">
+<button b-pand1dq8lx="" class="close-button" id="closeViolationReportModal">×</button>
+<h2 b-pand1dq8lx="" class="modal-title">Report abuse</h2>
+</div>
+<div b-pand1dq8lx="" class="modal-body">
+<form data-demo-form="true" data-pv-disable-submit="true" data-pv-error="Complete the report form correctly." data-pv-validate="true" id="violationReportForm">
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="ViolationReport_ReportedUrl">Reported URL</label>
+<input class="form-control input-validation-error" data-pv-required="true" data-val="true" data-val-required="Enter the reported URL." dir="ltr" id="reportedUrl" name="ViolationReport.ReportedUrl" placeholder="payvand.ir/abc123" type="text" value=""/>
+<span class="field-validation-error" data-valmsg-for="ViolationReport.ReportedUrl" data-valmsg-replace="true">Enter the reported URL.</span>
+</div>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="ViolationReport_Reason">Reason for report</label>
+<select class="form-control input-validation-error" data-pv-required="true" data-val="true" data-val-required="Choose a reason for the report." id="reportReason" name="ViolationReport.Reason">
+<option selected="selected" value="">Select a reason</option>
+<option value="phishing">Phishing or impersonation</option>
+<option value="malware">Malware</option>
+<option value="spam">Spam</option>
+<option value="abuse">Abusive or illegal content</option>
+<option value="other">Other</option>
+</select>
+<span class="field-validation-error" data-valmsg-for="ViolationReport.Reason" data-valmsg-replace="true">Choose a reason for the report.</span>
+</div>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="ViolationReport_Description">Details</label>
+<textarea class="form-control input-validation-error" data-pv-min="10" data-pv-required="true" data-val="true" data-val-minlength="Details must be at least 10 characters." data-val-minlength-min="10" data-val-required="Enter the report details." id="reportDescription" name="ViolationReport.Description" placeholder="Describe the problem...">
+
+</textarea>
+<span class="field-validation-error" data-valmsg-for="ViolationReport.Description" data-valmsg-replace="true">Enter the report details.</span>
+</div>
+<div b-pand1dq8lx="" class="form-group">
+<label class="form-label" for="ViolationReport_ReporterEmail">Your email (optional)</label>
+<input class="form-control" data-pv-email="true" data-val="true" data-val-email="Enter a valid email address." dir="ltr" id="reporterEmail" name="ViolationReport.ReporterEmail" placeholder="name@example.com" type="email" value=""/>
+<span class="field-validation-valid" data-valmsg-for="ViolationReport.ReporterEmail" data-valmsg-replace="true"></span>
+</div>
+<button b-pand1dq8lx="" class="submit-button" disabled="disabled" title="Available in the full application" type="submit">Submit report</button>
+</form>
+</div>
+</div>
+</div>
 <script defer="True" src="demo.js"></script></body>
 </html>

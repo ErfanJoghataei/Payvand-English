@@ -11,3 +11,12 @@ html[lang="en"] .footer-section{text-align:left}
 html[lang="en"] .modal-body{text-align:left}
 html[lang="en"] .short-url-input{direction:ltr}
 
+@media (max-width:480px){
+  html[lang="en"] .nav-actions .theme-toggle{margin-right:3px}
+  html[lang="en"] .nav-actions .nav-link img{display:none}
+  html[lang="en"] .nav-actions .nav-link{font-size:.76rem;padding:.4rem .2rem;max-width:none;overflow:visible;text-overflow:clip}
+}
+@media (max-width:360px){
+  html[lang="en"] .nav-actions .theme-toggle{display:none}
+}
+

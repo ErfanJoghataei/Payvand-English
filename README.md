@@ -4,7 +4,7 @@
 
 This folder is a separate English edition of the project. Its connection string points to the local `PayvandEnglishDb` database, leaving the original project and database alone. English Razor views, validation messages, legal pages, SEO text, and five seeded journal articles are included.
 
-The `docs/` directory contains a public, static dashboard preview for GitHub Pages. It opens without login, allows switching dashboard sections, and labels account or server actions as unavailable in the preview. The full application requires ASP.NET Core and a database.
+The `docs/` directory contains a public static preview for GitHub Pages: the home page, journal articles, legal pages, and a dashboard reached from the home page without login. Dashboard navigation works with labeled sample data; server actions are disabled in the preview. The full application requires ASP.NET Core and a database.
 
 To run locally, use .NET 10 and SQL Server LocalDB:
 

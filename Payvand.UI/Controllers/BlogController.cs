@@ -9,6 +9,15 @@ namespace Payvand.UI.Controllers;
 [Route("blog")]
 public sealed class BlogController : Controller
 {
+    private static readonly string[] EnglishArticleSlugs =
+    [
+        "what-is-short-link",
+        "qr-code-complete-guide",
+        "analyze-link-clicks",
+        "short-link-security-tips",
+        "qr-code-marketing-ideas"
+    ];
+
     private readonly PayvandDbContext db;
 
     public BlogController(PayvandDbContext db)
@@ -22,7 +31,8 @@ public sealed class BlogController : Controller
         category = category?.Trim();
         q = q?.Trim();
 
-        var query = db.Articles.AsNoTracking();
+        var query = db.Articles.AsNoTracking()
+            .Where(article => EnglishArticleSlugs.Contains(article.Slug));
         var categories = await query
             .Select(c => c.Category)
             .Distinct()
@@ -70,6 +80,11 @@ public sealed class BlogController : Controller
     [HttpGet("{slug}")]
     public async Task<IActionResult> Details(string slug)
     {
+        if (!EnglishArticleSlugs.Contains(slug, StringComparer.OrdinalIgnoreCase))
+        {
+            return NotFound();
+        }
+
         var article = await db.Articles.AsNoTracking()
             .FirstOrDefaultAsync(c => c.Slug == slug);
 
@@ -79,7 +94,7 @@ public sealed class BlogController : Controller
         }
 
         var related = await db.Articles.AsNoTracking()
-            .Where(c => c.Id != article.Id && c.Category == article.Category)
+            .Where(c => c.Id != article.Id && c.Category == article.Category && EnglishArticleSlugs.Contains(c.Slug))
             .OrderByDescending(c => c.PublishedAt)
             .Take(3)
             .ToListAsync();

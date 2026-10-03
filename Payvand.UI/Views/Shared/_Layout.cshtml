@@ -82,24 +82,12 @@
                             Journal
                         </a>
                     </li>
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <li>
-                            <a asp-action="Dash" asp-controller="Dashboard" asp-fragment="create" class="nav-link qr-header-button" value="qrcode">
-                                <img src="/Images/Icons/QrCode.png" class="icon icon-sm qr-header-icon" alt="QR Code Icon">
-                                <span class="qr-header-label">QrCode</span>
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="/#shortenerForm" class="nav-link qr-header-button" value="qrcode">
-                                <img src="/Images/Icons/QrCode.png" class="icon icon-sm qr-header-icon" alt="QR Code Icon">
-                                <span class="qr-header-label">QrCode</span>
-                            </a>
-                        </li>
-                    }
+                    <li>
+                        <a asp-action="Dash" asp-controller="Dashboard" asp-fragment="create" class="nav-link qr-header-button" value="qrcode">
+                            <img src="/Images/Icons/QrCode.png" class="icon icon-sm qr-header-icon" alt="QR Code Icon">
+                            <span class="qr-header-label">QrCode</span>
+                        </a>
+                    </li>
                     <li><a href="javascript:void(0)" data-section="features" class="nav-link">  <img src="/Images/Icons/Featurse.png" class="icon icon-sm" alt="Features Icon"> Features</a></li>
                     <li><a href="javascript:void(0)" data-section="faq" class="nav-link">  <img src="/Images/Icons/Guide.png" class="icon icon-sm" alt="Guide Icon"> Help</a></li>
                  
@@ -113,20 +101,10 @@
                         </span>
                         <span class="theme-toggle-label">Dark</span>
                     </button>
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <a asp-action="Dash" asp-controller="Dashboard" class="nav-link">
-                            <img src="/Images/Icons/ProfileIcon.png" class="icon icon-profile" alt="Guide Icon">
-                            Dashboard
-                        </a>
-                    }
-                    else
-                    {
-                        <a style="text-decoration:none;" asp-action="Login" asp-controller="Account" class="btn btn-primary">
-                            <img src="/Images/Icons/LoginLogo.png" class="icon icon-sm" alt="Login Icon">
-                            Sign in
-                        </a>
-                    }
+                    <a asp-action="Dash" asp-controller="Dashboard" class="nav-link">
+                        <img src="/Images/Icons/ProfileIcon.png" class="icon icon-profile" alt="Dashboard Icon">
+                        Dashboard
+                    </a>
              
   
                  
@@ -332,28 +310,6 @@
                     </div>
                 </div>
 
-                @if (User.Identity?.IsAuthenticated != true)
-                {
-                    <div class="modal-overlay" id="qrLoginPromptModal" aria-hidden="true">
-                        <div class="modal-container qr-login-dialog" role="dialog" aria-modal="true" aria-labelledby="qrLoginPromptTitle">
-                            <div class="modal-header">
-                                <button type="button" class="close-button" id="closeQrLoginPromptModal">&times;</button>
-                                <h2 class="modal-title" id="qrLoginPromptTitle">Sign in required</h2>
-                            </div>
-                            <div class="modal-body">
-                                <div class="qr-login-icon">
-                                    <img src="~/Images/Icons/QrCodeW.png" class="icon logo" alt="">
-                                </div>
-                                <p class="qr-login-message">Sign in to create a QR code.</p>
-                                <div class="qr-login-actions">
-                                    <button type="button" class="btn btn-secondary" id="qrLoginBackBtn">Back</button>
-                                    <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Sign in</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
- 
                 <script src="~/lib/jquery/dist/jquery.min.js"></script>
                 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
  
