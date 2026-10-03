@@ -11,12 +11,33 @@ html[lang="en"] .footer-section{text-align:left}
 html[lang="en"] .modal-body{text-align:left}
 html[lang="en"] .short-url-input{direction:ltr}
 
+/* Keep the public header usable between desktop and phone widths. */
+@media (min-width:769px) and (max-width:1080px){
+  html[lang="en"] .navbar{min-height:76px;padding:.75rem 1rem;position:relative;justify-content:flex-start}
+  html[lang="en"] .navbar>a:first-of-type{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+  html[lang="en"] .navbar>.menu-toggle:first-child{display:block;position:absolute;right:1rem;top:50%;transform:translateY(-50%)}
+  html[lang="en"] .navbar>.menu-toggle:last-child{display:none}
+  html[lang="en"] .nav-menu{display:none;position:absolute;top:100%;right:1rem;width:200px;flex-direction:column;gap:0;background:#fff;box-shadow:var(--shadow-lg);border-radius:8px;overflow:hidden;z-index:1000}
+  html[lang="en"] .nav-menu.active{display:flex}
+  html[lang="en"] .nav-actions{display:flex;position:absolute;left:1rem;top:50%;transform:translateY(-50%);align-items:center;gap:.35rem}
+  html[lang="en"] .nav-actions .theme-toggle{order:0}
+  html[lang="en"][data-theme="dark"] .nav-menu{background:#11182a}
+}
+
+html[lang="en"][data-theme="dark"] .nav-actions .nav-link{color:#edf1fb!important}
+
 @media (max-width:480px){
+  html[lang="en"] .navbar>a:first-of-type{left:68%}
   html[lang="en"] .nav-actions .theme-toggle{margin-right:3px}
   html[lang="en"] .nav-actions .nav-link img{display:none}
-  html[lang="en"] .nav-actions .nav-link{font-size:.76rem;padding:.4rem .2rem;max-width:none;overflow:visible;text-overflow:clip}
+  html[lang="en"] .nav-actions{max-width:none;z-index:2}
+  html[lang="en"] .nav-actions .nav-link{font-size:.76rem;padding:.4rem .2rem;max-width:none;overflow:visible;text-overflow:clip;white-space:nowrap}
 }
 @media (max-width:360px){
-  html[lang="en"] .nav-actions .theme-toggle{display:none}
+  html[lang="en"] .nav-actions{left:.5rem;gap:.2rem}
+  html[lang="en"] .nav-actions .theme-toggle{display:inline-flex;width:38px;min-width:38px;height:38px;padding:2px;margin-right:1px}
+  html[lang="en"] .nav-actions .theme-toggle-icons{flex-basis:30px;width:30px;height:30px}
+  html[lang="en"] .nav-actions .nav-link{font-size:.7rem;padding:.3rem .1rem}
+  html[lang="en"] .icon-Logo{width:40px;height:40px}
 }
 
